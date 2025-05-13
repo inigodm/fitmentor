@@ -3,6 +3,7 @@ package com.gym.fitmentor.users.coach.domain;
 import com.gym.fitmentor.users.coach.infrastructure.CoachJPA;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service Interface for managing {@link CoachJPA}.
@@ -29,12 +30,12 @@ public interface CoachService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Coach> findOne(Long id);
+    Optional<Coach> findOne(UUID id);
 
     /**
      * Delete the "id" coach.
      *
      * @param id the id of the entity.
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

@@ -28,13 +28,13 @@ open class CoachServiceAdapter(private val coachRepository: CoachRepository) : C
     }
 
     @Transactional(readOnly = true)
-    override fun findOne(id: Long): Optional<Coach?> {
+    override fun findOne(id: UUID): Optional<Coach?> {
         LOG.debug("Request to get Coach : {}", id)
         return coachRepository.findById(id)
             .map<Coach?>(Function { obj: CoachJPA? -> obj!!.toDomain() })
     }
 
-    override fun delete(id: Long) {
+    override fun delete(id: UUID) {
         LOG.debug("Request to delete Coach : {}", id)
         coachRepository.deleteById(id)
     }

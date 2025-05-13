@@ -1,6 +1,7 @@
 package com.gym.fitmentor.users.client.domain
 
 import java.util.Optional
+import java.util.UUID
 
 /**
  * Service Interface for managing [com.gym.fitmentor.users.client.infrastructure.ClientJPA].
@@ -27,12 +28,12 @@ interface ClientService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    fun findOne(id: Long): Optional<Client>
+    fun findOne(id: UUID): Client?
 
     /**
      * Delete the "id" client.
      *
      * @param id the id of the entity.
      */
-    fun delete(id: Long)
+    fun delete(id: UUID)
 }

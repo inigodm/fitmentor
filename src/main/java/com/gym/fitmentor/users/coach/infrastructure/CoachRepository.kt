@@ -8,5 +8,5 @@ import java.util.*
  * Spring Data JPA repository for the Coach entity.
  */
 @Repository
-interface CoachRepository : JpaRepository<CoachJPA, Long> {
+interface CoachRepository : JpaRepository<CoachJPA, UUID> {
 }

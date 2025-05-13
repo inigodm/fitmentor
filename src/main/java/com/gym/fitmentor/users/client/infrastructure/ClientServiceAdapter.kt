@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Optional
+import java.util.UUID
 import java.util.function.Function
 import java.util.stream.Collectors
 
@@ -31,13 +32,13 @@ open class ClientServiceAdapter(private val clientRepository: ClientRepository) 
     }
 
     @Transactional(readOnly = true)
-    override fun findOne(id: Long): Optional<Client> {
+    override fun findOne(id: UUID): Client? {
         LOG.debug("Request to get Client : {}", id)
         return clientRepository.findById(id)
-            .map(Function { obj: ClientJPA -> obj.toDomain() })
+            .map(Function { obj: ClientJPA -> obj.toDomain() }).orElse(null)
     }
 
-    override fun delete(id: Long) {
+    override fun delete(id: UUID) {
         LOG.debug("Request to delete Client : {}", id)
         clientRepository.deleteById(id)
     }

@@ -13,7 +13,7 @@ import java.util.UUID
 class ClientJPA : Serializable {
     // jhipster-needle-entity-add-field - JHipster will add fields here
     @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     lateinit var id: UUID
 
     @Column(name = "goals")
