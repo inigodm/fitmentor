@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Coach.
+    -->
+    <changeSet id="20250512231238-1" author="jhipster">
+        <createTable tableName="coach">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nutrition" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="fitness" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="experience" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="bio" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="training_style" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="available_days" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="city" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="works_online" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="works_in_person" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="price_online" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="priceon_person" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="certifcations" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
