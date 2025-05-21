@@ -1,0 +1,13 @@
+spring.application.name: fitmentor
+spring:
+    datasource:
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+    flyway:
+        locations: classpath:db/migration
+        enabled: true
+    main:
+        allow-bean-definition-overriding: true
+server:
+    port: 8080
