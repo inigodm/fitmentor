@@ -5,36 +5,36 @@ info:
   version: 1.0.0
 paths:
   /user/clients:
-    post:
-      summary: Create client
-      description: Create new client
+    put:
+      summary: Save client
+      description: Saves client
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCreationRequest'
+              $ref: '#/components/schemas/ClientSaveRequest'
       responses:
         '200':
-          description: Client created.
+          description: Client saved.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCreationResponse'
+                $ref: '#/components/schemas/ClientSaveResponse'
         '400':
           description: Invalid Request.
         '500':
           description: Server error.
 components:
   schemas:
-    ClientCreationResponse:
+    ClientSaveResponse:
       type: object
       properties:
         token:
           type: string
           description: Generated
 
-    ClientCreationRequest:
+    ClientSaveRequest:
       type: object
       required:
         - id

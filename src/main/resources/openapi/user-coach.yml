@@ -5,29 +5,29 @@ info:
   version: 1.0.0
 paths:
   /user/coaches:
-    post:
-      summary: Create coach
-      description: Create new coach
+    put:
+      summary: Save coach
+      description: Saves coach
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CoachCreationRequest'
+              $ref: '#/components/schemas/CoachSaveRequest'
       responses:
         '200':
-          description: Coach created.
+          description: Coach saved.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CoachCreationResponse'
+                $ref: '#/components/schemas/CoachSaveResponse'
         '400':
           description: Invalid Request.
         '500':
           description: Server error.
 components:
   schemas:
-    CoachCreationRequest:
+    CoachSaveRequest:
       type: object
       required:
         - user
@@ -75,7 +75,7 @@ components:
           type: boolean
           description: Offers trainer services.
 
-    CoachCreationResponse:
+    CoachSaveResponse:
       type: object
       properties:
         token:

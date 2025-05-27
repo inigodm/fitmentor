@@ -30,6 +30,13 @@ for entry in "${SLICES_AND_SPECS[@]}"; do
 
   mkdir -p "$OUTPUT_DIR"
 
+  find ../src/main/java -type f -name "*.kt" -exec sed -i 's/import javax\./import jakarta./g' {} +
+  find ../src/main/java -type f -name "*.kt" -exec sed -i '/^[[:space:]]*@field:Valid[[:space:]]*$/d' {} +
+  find ../src/main/java -type f -name "*.kt" -exec sed -i -E '/@Schema\([^\)]*\)[[:space:]]*$/{
+  N
+  s/@Schema\([^\)]*\)[[:space:]]*\n[[:space:]]*@get:JsonProperty\("([^"]+)"[^\)]*\)/@field:NotNull(message = "\1 must not be null")/
+  }' {} +
+
   rsync -a "$TEMP_DIR"/src/main/kotlin/* "$OUTPUT_BASE"
 done
 
