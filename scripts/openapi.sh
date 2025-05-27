@@ -8,6 +8,7 @@ TEMP_DIR="./tmp-openapi"
 
 declare -a SLICES_AND_SPECS=(
   "coach=../src/main/resources/openapi/user-coach.yml"
+  "client=../src/main/resources/openapi/user-client.yml"
 )
 
 for entry in "${SLICES_AND_SPECS[@]}"; do

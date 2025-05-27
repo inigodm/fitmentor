@@ -1,0 +1,26 @@
+TimeSlot:
+  type: object
+  required:
+    - client
+    - coach
+    - dayOfWeek
+    - startTime
+    - endTime
+  properties:
+    client:
+      type: uuid
+      description: List of client ids associated with the coach.
+    coach:
+      type: uuid
+      description: List of client ids associated with the coach.
+    dayOfWeek:
+      type: string
+      enum: [ MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY ]
+    startTime:
+      type: string
+      format: time
+      example: "09:00"
+    endTime:
+      type: string
+      format: time
+      example: "11:00"

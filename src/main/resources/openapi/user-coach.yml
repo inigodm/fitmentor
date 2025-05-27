@@ -1,47 +1,83 @@
 openapi: 3.0.1
 info:
   title: Auth API
-  description: API para autenticación de usuarios.
+  description: API para gestion de coachs.
   version: 1.0.0
 paths:
-  /auth/login:
+  /user/coaches:
     post:
-      summary: Autenticar usuario
-      description: Genera un token de autenticación para el usuario.
+      summary: Create coach
+      description: Create new coach
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthRequest'
+              $ref: '#/components/schemas/CoachCreationRequest'
       responses:
         '200':
-          description: Token generado exitosamente.
+          description: Coach created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthResponse'
+                $ref: '#/components/schemas/CoachCreationResponse'
         '400':
-          description: Solicitud inválida.
+          description: Invalid Request.
         '500':
-          description: Error interno del servidor.
+          description: Server error.
 components:
   schemas:
-    AuthRequest:
+    CoachCreationRequest:
       type: object
       required:
-        - username
-        - password
+        - user
+        - id
       properties:
-        username:
+        user:
+          type: uuid
+          description: User id
+        id:
+          type: coach
+          description: Coach id
+        name:
           type: string
-          description: Nombre de usuario.
-        password:
+          description: Name of the coach.
+        location:
           type: string
-          description: Contraseña del usuario.
-    AuthResponse:
+          description: Location of the coach.
+        languages:
+          type: array
+          items:
+            type: string
+          description: List of languages spoken by the coach.
+        physical:
+          type: boolean
+          description: Offers physical training services.
+        experienceYears:
+          type: integer
+          format: int32
+        bio:
+          type: string
+          description: Coach biography.
+        availability:
+          type: array
+          items:
+            $ref: "./common.yml#/TimeSlot"
+        clients:
+          type: array
+          items:
+            type: uuid
+          description: List of client ids associated with the coach.
+        nutritionist:
+          type: boolean
+          description: Offers nutritionist services.
+        trainer:
+          type: boolean
+          description: Offers trainer services.
+
+    CoachCreationResponse:
       type: object
       properties:
         token:
           type: string
-          description: Token de autenticación generado.
+          description: Generated
