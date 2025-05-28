@@ -11,3 +11,15 @@ spring:
         allow-bean-definition-overriding: true
 server:
     port: 8080
+jwt:
+    secret: |
+        random string dfsdfenrñjweugb
+        must be a long string in order to 
+        have more than 256 bytes, so I think that I should 
+        write some more characters here: 
+        lets see: 1, 2, 3
+    issuer: "fitmentor"
+    audience: "user"
+    header: Authorization
+    prefix: Bearer
+    token-type: JWT

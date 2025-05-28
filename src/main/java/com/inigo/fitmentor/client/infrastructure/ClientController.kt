@@ -1,4 +1,4 @@
-package com.gym.fitmentor.users.client.infrastructure
+package com.inigo.fitmentor.client.infrastructure
 
 import com.gym.fitmentor.users.client.application.CreateClient
 import com.gym.fitmentor.users.client.application.FindClient
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 /**
- * REST controller for managing [ClientJpa].
+ * REST controller for managing [com.gym.fitmentor.users.client.infrastructure.ClientJpa].
  */
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/user/clients")
 @Validated
 class ClientController(val createClient: CreateClient, val findClient: FindClient, val updateClient: UpdateClient) {
 

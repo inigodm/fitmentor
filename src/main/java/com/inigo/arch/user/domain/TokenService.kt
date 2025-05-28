@@ -7,4 +7,6 @@ interface TokenService {
     fun generateToken(username: String, email: String, id: UUID, userRole: Int): String
 
     fun parseToken(bearer: String): LoggedInUser
+
+    fun isSignatureValid(token: String): Boolean
 }

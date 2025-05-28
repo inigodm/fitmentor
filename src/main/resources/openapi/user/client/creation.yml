@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: Auth API
+  description: API para gestion de coachs.
+  version: 1.0.0
+paths:
+  /user/clients:
+    put:
+      summary: Save client
+      description: Saves client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientSaveRequest'
+      responses:
+        '200':
+          description: Client saved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientSaveResponse'
+        '400':
+          description: Invalid Request.
+        '500':
+          description: Server error.
+components:
+  schemas:
+    ClientSaveResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Generated
+
+    ClientSaveRequest:
+      type: object
+      required:
+        - id
+        - user
+      properties:
+        id:
+          type: UUID
+          description: Client id
+        goals:
+          type: string
+          nullable: true
+        age:
+          type: integer
+          format: int32
+          nullable: true
+        injuries:
+          type: string
+          nullable: true
+        weight:
+          type: integer
+          format: int32
+          nullable: true
+        equipmentAccess:
+          type: integer
+          format: int32
+          nullable: true
+        preferredTrainingStyle:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
+        availability:
+          type: array
+          items:
+            type: string
+            format: date-time
+          nullable: true
+        user:
+          type: UUID
+          description: Identificador del usuario asociado
+        coach:
+          type: UUID
+          nullable: true
+          description: Identificador del coach asignado (si existe)

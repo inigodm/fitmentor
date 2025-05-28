@@ -24,19 +24,21 @@ for entry in "${SLICES_AND_SPECS[@]}"; do
     -i "$SPEC_FILE" \
     -o "$TEMP_DIR" \
     --global-property=api,apis,models \
-    --additional-properties=interfaceOnly=true,skipDefaultInterface=true,useTags=true,apiNameSuffix="$SLICE" \
+    --additional-properties=interfaceOnly=true,skipDefaultInterface=true,useTags=true,apiNameSuffix="$SLICE",apiName="$SLICE" \
     --package-name="$PACKAGE" \
     --skip-validate-spec
 
   mkdir -p "$OUTPUT_DIR"
-
+  echo "Fixing imports: javax -> jakarta..."
   find ../src/main/java -type f -name "*.kt" -exec sed -i 's/import javax\./import jakarta./g' {} +
+  echo "Remove @field:Valid..."
   find ../src/main/java -type f -name "*.kt" -exec sed -i '/^[[:space:]]*@field:Valid[[:space:]]*$/d' {} +
+  echo "Changing @Schemas to spring validation annotations..."
   find ../src/main/java -type f -name "*.kt" -exec sed -i -E '/@Schema\([^\)]*\)[[:space:]]*$/{
   N
   s/@Schema\([^\)]*\)[[:space:]]*\n[[:space:]]*@get:JsonProperty\("([^"]+)"[^\)]*\)/@field:NotNull(message = "\1 must not be null")/
   }' {} +
-
+  echo "Cleaning up generated code..."
   rsync -a "$TEMP_DIR"/src/main/kotlin/* "$OUTPUT_BASE"
 done
 

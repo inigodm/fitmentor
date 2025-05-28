@@ -1,6 +1,8 @@
 package com.gym.fitmentor.users.client.infrastructure
 
 import com.inigo.fitmentor.client.domain.Client
+import com.inigo.shared.domain.ClientId
+import com.inigo.shared.domain.UserId
 import jakarta.persistence.*
 import java.io.Serializable
 import java.util.UUID
@@ -9,7 +11,7 @@ import java.util.UUID
  * A Client.
  */
 @Entity
-@Table(name = "client")
+@Table(name = "clients")
 class ClientJpa : Serializable {
     // jhipster-needle-entity-add-field - JHipster will add fields here
     @Id
@@ -31,45 +33,35 @@ class ClientJpa : Serializable {
     @Column(name = "equipment_access")
     var equipmentAccess: Int? = null
 
-    @Column(name = "prefered_training_style")
-    var preferedTrainingStyle: String? = null
-
-    @Column(name = "phonenumber")
+    @Column(name = "phone_number")
     var phonenumber: String? = null
 
     @Column(name = "user")
     lateinit var user: UUID
 
-    @Column(name = "coach")
-    var coach: UUID? = null
-
   fun toDomain(): Client {
     return Client(
-      id = id,
+      id = ClientId(id),
       goals = goals,
       age = age,
       injuries = injuries,
       weight = weight,
       equipmentAccess = equipmentAccess,
-      preferedTrainingStyle = preferedTrainingStyle,
       phonenumber = phonenumber,
-      user = user,
-      coach = coach
+      user = UserId(user) // Assuming plans are not stored in this entity
     )
   }
   companion object {
     @JvmStatic
     fun fromDomain(client: Client) = ClientJpa().apply {
-        id = client.id
+        id = client.id.value
         goals = client.goals
         age = client.age
         injuries = client.injuries
         weight = client.weight
         equipmentAccess = client.equipmentAccess
-        preferedTrainingStyle = client.preferedTrainingStyle
         phonenumber = client.phonenumber
-        user = client.user
-        coach = client.coach
+        user = client.user.value
     }
   }
 }

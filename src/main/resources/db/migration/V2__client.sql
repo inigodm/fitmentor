@@ -5,10 +5,8 @@ CREATE TABLE clients (
     injuries VARCHAR NOT NULL,
     weight INT NOT NULL,
     equipment_access INT NOT NULL,
-    prefered_training_style VARCHAR NOT NULL,
-    phonenumber VARCHAR NOT NULL,
-    userId UUID NOT NULL,
-    coachId UUID
+    phone_number VARCHAR NOT NULL,
+    userId UUID NOT NULL
 );
 
 CREATE INDEX idx_clients_userId ON clients (userId);

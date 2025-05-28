@@ -8,10 +8,10 @@ TimeSlot:
     - endTime
   properties:
     client:
-      type: uuid
+      type: UUID
       description: List of client ids associated with the coach.
     coach:
-      type: uuid
+      type: UUID
       description: List of client ids associated with the coach.
     dayOfWeek:
       type: string

@@ -6,7 +6,6 @@ import com.inigo.arch.user.domain.Username
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import lombok.AllArgsConstructor
-import lombok.Data
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping

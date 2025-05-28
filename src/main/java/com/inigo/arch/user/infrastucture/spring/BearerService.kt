@@ -4,21 +4,15 @@ import com.inigo.arch.user.domain.TokenService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.security.Key
 import java.util.*
 
 @Component
-class BearerService : TokenService {
-    private val JWT_SECRET = """
-    random string dfsdfenrñjweugb
-    must be a long string in order to 
-    have more than 256 bytes, so I think that I should 
-    write some more characters here: 
-    lets see: 1, 2, 3
-
-""".trimIndent()
-
+class BearerService(
+    @Value("\${jwt.secret}") val JWT_SECRET: String
+)  : TokenService{
     override fun generateToken(username: String, email: String, id: UUID, userRole: Int): String {
         val key: Key = Keys.hmacShaKeyFor(JWT_SECRET.toByteArray())
 
@@ -48,6 +42,19 @@ class BearerService : TokenService {
         val email = jwsClaims.getBody().get("email", String::class.java)
         val userRole = jwsClaims.getBody().get("userRole", Integer::class.java).toInt()
         return LoggedInUser(username, email, userId, userRole)
+    }
+
+    override fun isSignatureValid(token: String): Boolean {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(JWT_SECRET.toByteArray())
+                .build()
+                .parseClaimsJws(token)
+            true
+        } catch (ex: Exception) {
+            println("Error al validar el token: ${ex.message}")
+            false
+        }
     }
 }
 
