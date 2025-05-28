@@ -1,4 +1,4 @@
-package com.inigo.arch.user.infrastucture.spring
+package com.inigo.arch.user.infrastucture
 
 class UnauthorizedError(message: String, e: Exception? = null) : RuntimeException(message, e) {
     companion object {

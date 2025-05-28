@@ -1,4 +1,4 @@
-package com.gym.fitmentor.users.client.infrastructure
+package com.inigo.fitmentor.client.infrastructure
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

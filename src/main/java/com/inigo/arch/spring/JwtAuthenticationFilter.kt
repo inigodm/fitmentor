@@ -1,8 +1,6 @@
 package com.inigo.arch.spring
 
 import com.inigo.arch.user.domain.TokenService
-import com.inigo.arch.user.infrastucture.spring.LoggedInUser
-import io.jsonwebtoken.Jwts
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
@@ -18,8 +16,7 @@ import java.io.IOException
 
 @Component
 class JwtAuthenticationFilter(
-    val tokenService: TokenService,
-    @Value("\${jwt.secret}") val secretKey: String
+    val tokenService: TokenService
 ) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
@@ -33,24 +30,8 @@ class JwtAuthenticationFilter(
             filterChain.doFilter(request, response)
             return
         }
-        val tok: String? = header.substring(7)
-        try {
-            // Validar el token usando el servicio de tokens
-            val user = tokenService.parseToken(tok!!)
-            println(user.id)
-            println("Is a valid signature? ${tokenService.isSignatureValid(tok)}")
-            println("Token: $tok")
-            println("Secret: ${secretKey}")
-        } catch (ex: Exception) {
-            // Manejar el caso de token inválido
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido: " + ex.message)
-            return
-        }
-        println("Token is valid")
         val token = createToken(header)
-        println("Configurando SecurityContext con el token: $token")
         SecurityContextHolder.getContext().authentication = token
-        println("SecurityContext configurado: ${SecurityContextHolder.getContext().authentication}")
         filterChain.doFilter(request, response)
     }
 

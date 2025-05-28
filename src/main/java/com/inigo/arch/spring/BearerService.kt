@@ -1,4 +1,4 @@
-package com.inigo.arch.user.infrastucture.spring
+package com.inigo.arch.spring
 
 import com.inigo.arch.user.domain.TokenService
 import io.jsonwebtoken.Jwts

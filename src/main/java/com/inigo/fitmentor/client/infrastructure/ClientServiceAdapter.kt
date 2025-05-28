@@ -1,8 +1,8 @@
-package com.gym.fitmentor.users.client.infrastructure
+package com.inigo.fitmentor.client.infrastructure
 
 import com.inigo.fitmentor.client.domain.Client
-import com.gym.fitmentor.users.client.domain.ClientService
-import com.gym.fitmentor.users.client.infrastructure.ClientJpa.Companion.fromDomain
+import com.inigo.fitmentor.client.domain.ClientService
+import com.inigo.fitmentor.client.infrastructure.ClientJpa.Companion.fromDomain
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

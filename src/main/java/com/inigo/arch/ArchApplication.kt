@@ -2,13 +2,17 @@ package com.inigo.arch
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import java.net.InetAddress
 import java.net.UnknownHostException
 
 @SpringBootApplication
-@EnableJpaRepositories("com.inigo")
+@EnableJpaRepositories(basePackages = ["com.inigo.arch", "com.inigo.fitmentor"])
+@EntityScan(basePackages = ["com.inigo.arch", "com.inigo.fitmentor"])
+@ComponentScan(basePackages = ["com.inigo.arch", "com.inigo.fitmentor"])
 object ArchApplication {
     @JvmStatic
     fun main(args: Array<String>) {

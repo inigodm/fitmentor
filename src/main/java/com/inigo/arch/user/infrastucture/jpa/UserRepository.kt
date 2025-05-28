@@ -1,10 +1,10 @@
-package com.inigo.arch.user.infrastucture
+package com.inigo.arch.user.infrastucture.jpa
 
 import com.inigo.arch.user.domain.User
 import com.inigo.arch.user.domain.UserStore
 import com.inigo.arch.user.domain.Password
 import com.inigo.arch.user.domain.Username
-import com.inigo.arch.user.infrastucture.spring.UnauthorizedError
+import com.inigo.arch.user.infrastucture.UnauthorizedError
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 

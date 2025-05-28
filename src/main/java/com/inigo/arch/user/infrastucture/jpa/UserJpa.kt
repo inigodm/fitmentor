@@ -1,6 +1,10 @@
-package com.inigo.arch.user.infrastucture
+package com.inigo.arch.user.infrastucture.jpa
 
+import com.inigo.arch.user.domain.Email
+import com.inigo.arch.user.domain.Password
+import com.inigo.arch.user.domain.Role
 import com.inigo.arch.user.domain.User
+import com.inigo.arch.user.domain.Username
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -24,10 +28,10 @@ class UserJpa(
     fun toDomain(): User {
         return User(
             id = id,
-            username = com.inigo.arch.user.domain.Username(username),
-            email = com.inigo.arch.user.domain.Email(email),
-            password = com.inigo.arch.user.domain.Password(password),
-            role = com.inigo.arch.user.domain.Role.valueOf(role)
+            username = Username(username),
+            email = Email(email),
+            password = Password(password),
+            role = Role.valueOf(role)
         )
     }
 

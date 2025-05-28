@@ -1,4 +1,4 @@
-package com.inigo.arch.user.infrastucture
+package com.inigo.arch.user.infrastucture.jpa
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

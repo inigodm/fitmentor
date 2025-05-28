@@ -1,10 +1,9 @@
-package com.gym.fitmentor.users.client.domain
+package com.inigo.fitmentor.client.domain
 
-import com.inigo.fitmentor.client.domain.Client
 import java.util.UUID
 
 /**
- * Service Interface for managing [com.gym.fitmentor.users.client.infrastructure.ClientJpa].
+ * Service Interface for managing [com.inigo.fitmentor.client.infrastructure.ClientJpa].
  */
 interface ClientService {
     /**

@@ -44,11 +44,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/user/create").permitAll()
                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui*", "/v3/*").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/user/clients").authenticated()
-                    //.requestMatchers( "/user/client").permitAll()
-                //.requestMatchers( "/user/coach").permitAll()
-                .requestMatchers("/**").authenticated();
                 // The rest of them will be private
+                .requestMatchers("/**").authenticated();
         });
         // Add JWT token filter
         http.addFilterAfter(

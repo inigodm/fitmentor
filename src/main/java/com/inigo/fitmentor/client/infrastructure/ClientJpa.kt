@@ -1,4 +1,4 @@
-package com.gym.fitmentor.users.client.infrastructure
+package com.inigo.fitmentor.client.infrastructure
 
 import com.inigo.fitmentor.client.domain.Client
 import com.inigo.shared.domain.ClientId
@@ -36,7 +36,7 @@ class ClientJpa : Serializable {
     @Column(name = "phone_number")
     var phonenumber: String? = null
 
-    @Column(name = "user")
+    @Column(name = "user_id")
     lateinit var user: UUID
 
   fun toDomain(): Client {
