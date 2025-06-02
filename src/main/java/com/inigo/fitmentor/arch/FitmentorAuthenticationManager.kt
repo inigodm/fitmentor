@@ -1,7 +1,7 @@
-package com.inigo.arch.spring
+package com.inigo.fitmentor.arch
 
+import com.inigo.arch.user.domain.AuthenticationData
 import com.inigo.arch.user.domain.Password
-import com.inigo.arch.user.domain.User
 import com.inigo.arch.user.domain.UserStore
 import com.inigo.arch.user.domain.Username
 import org.springframework.security.authentication.AuthenticationManager
@@ -10,23 +10,24 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+
 @Service
-class AuthenticationManagerImpl(val store: UserStore): AuthenticationManager {
+class FitmentorAuthenticationManager(val store: UserStore): AuthenticationManager {
     override fun authenticate(authentication: Authentication): Authentication {
-        val user = store.checkByUsernameAndPassword(
+        val authenticationData = store.checkByUsernameAndPassword(
             Username(authentication.principal.toString()),
             Password(authentication.credentials.toString()))
-        return UserAuthentication(user)
+        return UserAuthentication(authenticationData)
     }
 }
 
-class UserAuthentication(val user: User) : Authentication {
+class UserAuthentication(val authenticationData: AuthenticationData) : Authentication {
     fun getId() : UUID {
-        return user.id
+        return authenticationData.userId
     }
 
     override fun getName(): String {
-        return user.username.value
+        return authenticationData.username
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
@@ -42,7 +43,7 @@ class UserAuthentication(val user: User) : Authentication {
     }
 
     override fun getPrincipal(): Any {
-        return user.username.value
+        return authenticationData.username
     }
 
     override fun isAuthenticated(): Boolean {
@@ -52,6 +53,9 @@ class UserAuthentication(val user: User) : Authentication {
     override fun setAuthenticated(isAuthenticated: Boolean) {
     }
 
-    fun getEmail() = user.email.value
-    fun getUserRole() = user.role.ordinal
+    fun getEmail(): String = authenticationData.email
+    fun getUserRole(): Int = authenticationData.role
+    fun getClientId(): UUID? = authenticationData.clientId
+    fun getCoachId(): UUID? = authenticationData.coachId
+
 }

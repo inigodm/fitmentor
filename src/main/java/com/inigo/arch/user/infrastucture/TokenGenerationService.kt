@@ -1,7 +1,7 @@
 package com.inigo.arch.user.infrastucture
 
 import com.inigo.arch.spring.BearerService
-import com.inigo.arch.spring.UserAuthentication
+import com.inigo.fitmentor.arch.UserAuthentication
 import com.inigo.arch.user.domain.Password
 import com.inigo.arch.user.domain.Token
 import com.inigo.arch.user.domain.TokenGenerator
@@ -23,6 +23,8 @@ class TokenGenerationService(private val authManager: AuthenticationManager, pri
                 authentication.name,
                 authentication.getEmail(),
                 authentication.getId(),
+                authentication.getClientId(),
+                authentication.getCoachId(),
                 authentication.getUserRole()
             )
         )

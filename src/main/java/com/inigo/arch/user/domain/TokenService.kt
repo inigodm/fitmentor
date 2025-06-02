@@ -4,7 +4,12 @@ import com.inigo.arch.spring.LoggedInUser
 import java.util.*
 
 interface TokenService {
-    fun generateToken(username: String, email: String, id: UUID, userRole: Int): String
+    fun generateToken(username: String,
+                      email: String,
+                      id: UUID,
+                      clientId: UUID?,
+                      coachId: UUID?,
+                      userRole: Int): String
 
     fun parseToken(bearer: String): LoggedInUser
 

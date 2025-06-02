@@ -41,7 +41,6 @@ class JwtAuthenticationFilter(
 
     private fun createToken(authorizationHeader: String): UsernamePasswordAuthenticationToken {
         val userPrincipal = tokenService.parseToken(authorizationHeader)
-        println("UserPrincipal: $userPrincipal")
         return UsernamePasswordAuthenticationToken(userPrincipal, userPrincipal, mutableListOf<GrantedAuthority?>())
     }
 }

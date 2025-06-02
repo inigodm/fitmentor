@@ -3,6 +3,8 @@ package com.inigo.fitmentor.client.infrastructure
 import com.inigo.fitmentor.client.application.FindClient
 import com.inigo.fitmentor.client.application.UpdateClient
 import com.inigo.fitmentor.client.domain.Client
+import com.inigo.shared.domain.ClientId
+import com.inigo.shared.domain.UserId
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import org.slf4j.Logger
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.io.Serializable
 import java.util.*
 
 /**
@@ -39,14 +42,41 @@ class ClientController(val findClient: FindClient, val updateClient: UpdateClien
     }
 
     @PutMapping()
-    fun updateClient(@Valid @RequestBody client: Client): ResponseEntity<*> {
+    fun updateClient(@Valid @RequestBody client: ClientCreationRequest): ResponseEntity<*> {
         LOG.debug("REST request to update Client : {}", client.id)
 
-        val updatedClient = updateClient.execute(client)
+        val updatedClient = updateClient.execute(toDomain(client))
         return ResponseEntity.ok("")
+    }
+
+    fun toDomain(clientReq: ClientCreationRequest): Client {
+        return with(clientReq) {
+            Client(
+                id = id,
+                goals = goals,
+                age = age,
+                injuries = injuries,
+                weight = weight,
+                equipmentAccess = equipmentAccess,
+                phonenumber = phonenumber,
+                user = user
+            )
+        }
     }
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(ClientController::class.java)
     }
+
+    data class ClientCreationRequest(
+        @field:NotNull(message = "id must not be null") var id: ClientId,
+        var goals: String? = null,
+        var age: Int? = null,
+        var injuries: String? = null,
+        var weight: Int? = null,
+        var equipmentAccess: Int? = null,
+        var phonenumber: String? = null,
+        @field:NotNull(message = "user must not be null") var user: UserId,
+        var plans: List<UUID>? = null
+    ) : Serializable
 }

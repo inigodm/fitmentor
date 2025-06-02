@@ -13,7 +13,13 @@ import java.util.*
 class BearerService(
     @Value("\${jwt.secret}") val JWT_SECRET: String
 )  : TokenService{
-    override fun generateToken(username: String, email: String, id: UUID, userRole: Int): String {
+    override fun generateToken(
+        username: String,
+        email: String,
+        id: UUID,
+        clientId: UUID?,
+        coachId: UUID?,
+        userRole: Int): String {
         val key: Key = Keys.hmacShaKeyFor(JWT_SECRET.toByteArray())
 
         val compactTokenString = Jwts.builder()
@@ -22,6 +28,8 @@ class BearerService(
             .claim("sub", username)
             .claim("email", email)
             .claim("userRole", userRole)
+            .claim("clientId", clientId?.toString())
+            .claim("coachId", coachId?.toString())
             .setExpiration(null)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
