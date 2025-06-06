@@ -1,4 +1,4 @@
-package com.inigo.fitmentor.arch
+package com.inigo.arch.user.infrastucture
 
 import com.inigo.arch.user.domain.AuthenticationData
 import com.inigo.arch.user.domain.Password

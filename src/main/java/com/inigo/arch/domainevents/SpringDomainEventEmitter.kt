@@ -8,12 +8,9 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class SpringDomainEventEmitter(): DomainEmitter {
+class SpringDomainEventEmitter(val applicationEventPublisher: ApplicationEventPublisher): DomainEmitter {
 
-    @Autowired
-    lateinit var applicationEventPublisher: ApplicationEventPublisher
-
-    override fun <T : DomainEvent?> emit(event: T?) {
+    override fun <T : DomainEvent> emit(event: T) {
         applicationEventPublisher.publishEvent(event)
     }
 }

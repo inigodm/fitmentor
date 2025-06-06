@@ -1,9 +1,9 @@
 package com.inigo.fitmentor.client.domain
 
-import com.inigo.arch.domainevents.ClientCreated
 import com.inigo.arch.shared.domain.AggregateRoot
 import com.inigo.shared.domain.ClientId
 import com.inigo.shared.domain.UserId
+import com.inigo.shared.domain.events.ClientCreated
 
 class Client(
   val id: ClientId,
@@ -15,7 +15,28 @@ class Client(
   val phonenumber: String? = null,
   val user: UserId
 ) : AggregateRoot() {
-  init {
-    record(ClientCreated(this.id, this.user))
+  fun ensureUserExists(store: ClientService): Client {
+    if (!store.existsUser(this)) {
+      throw IllegalArgumentException("User with id ${this.user} does not exist")
+    }
+    return this
   }
+
+  fun save(store: ClientService): Client {
+    store.save(this)
+    return this
+  }
+
+  fun ensureClientExists(store: ClientService): Client {
+    if (!store.existsClient(this)) {
+      throw IllegalArgumentException("User with id ${this.user} does not exist")
+    }
+    return this
+  }
+
+  init {
+    record(ClientCreated(this.id.value, this.user.value))
+  }
+
+
 }
