@@ -52,11 +52,6 @@ open class ClientServiceAdapter(
         return userJpaRepository.findById(client.user.value).isPresent
     }
 
-    override fun existsClient(client: Client) : Boolean {
-        LOG.debug("Request to check existence of client : {} ", client.id.value)
-        return clientRepository.findById(client.id.value).isPresent
-    }
-
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(ClientServiceAdapter::class.java)
     }

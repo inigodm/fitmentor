@@ -17,4 +17,5 @@ interface UserJpaRepository : JpaRepository<UserJpa, UUID> {
 
     @Query("SELECT id FROM coachs c WHERE c.user_id = :userId", nativeQuery = true)
     fun findCoachIdByuserId(@Param("userId") userId: String): UUID
+    fun findByEmail(email: String): Optional<UserJpa>
 }

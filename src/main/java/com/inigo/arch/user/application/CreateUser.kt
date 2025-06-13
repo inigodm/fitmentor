@@ -25,6 +25,15 @@ class CreateUser(val store: UserStore) {
             password = password,
             role = role
         )
+        if (store.existsUserId(user)) {
+            throw IllegalArgumentException("User with id ${id} already exists")
+        }
+        if (store.existsEmail(user)) {
+            throw IllegalArgumentException("User with id ${email} already exists")
+        }
+        if (store.existsUsername(user)) {
+            throw IllegalArgumentException("User with username ${username} already exists")
+        }
         store.save(user)
     }
 }

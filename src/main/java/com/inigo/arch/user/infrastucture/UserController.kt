@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @Validated
 class UserController(val createUser: CreateUser) {
-    @PutMapping("/create")
+    @PutMapping()
     fun save(@Valid @RequestBody request: UserCreateRequest): ResponseEntity<String> {
         createUser.execute(
             request.id,

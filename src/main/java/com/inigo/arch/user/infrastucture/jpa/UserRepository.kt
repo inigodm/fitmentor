@@ -9,9 +9,6 @@ import com.inigo.arch.user.domain.Username
 import com.inigo.arch.user.infrastucture.UnauthorizedError
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
-import kotlin.text.get
-import kotlin.text.matches
-import kotlin.toString
 
 @Component
 class UserRepository(val repo : UserJpaRepository,
@@ -62,8 +59,8 @@ class UserRepository(val repo : UserJpaRepository,
                 user.email.value,
                 bCryptEncoder.encode(user.password.value),
                 user.role.name)
-        )
-    }
+            )
+        }
 
     override fun delete(user: User) {
         repo.delete(
@@ -74,4 +71,10 @@ class UserRepository(val repo : UserJpaRepository,
                 user.role.name)
         )
     }
+
+    override fun existsUserId(user: User) = repo.existsById(user.id)
+
+    override fun existsUsername(user: User) = repo.findByUsername(user.username.value).isPresent
+
+    override fun existsEmail(user: User) = repo.findByEmail(user.email.value).isPresent
 }

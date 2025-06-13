@@ -41,8 +41,8 @@ public class SecurityConfig {
         // Set permissions on endpoints
         http.authorizeHttpRequests(auth -> {
             auth
-                .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/user/create").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/user").permitAll()
                 .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui*", "/v3/*").permitAll()
                 // The rest of them will be private
                 .requestMatchers("/**").authenticated();

@@ -1,6 +1,5 @@
 package com.inigo.fitmentor.client.infrastructure
 
-import com.inigo.fitmentor.client.application.CreateClient
 import com.inigo.fitmentor.client.application.FindClient
 import com.inigo.fitmentor.client.application.UpdateClient
 import com.inigo.fitmentor.client.domain.Client
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,12 +24,11 @@ import java.util.*
  * REST controller for managing [ClientJpa].
  */
 @RestController
-@RequestMapping("/user/clients")
+@RequestMapping("/api/user/clients")
 @Validated
 class ClientController(
     val findClient: FindClient,
-    val updateClient: UpdateClient,
-    val createClient: CreateClient) {
+    val updateClient: UpdateClient) {
 
     /**
      * `GET  /clients/:id` : get the "id" client.
@@ -60,22 +57,14 @@ class ClientController(
     }
 
     @PutMapping()
-    fun updateClient(@Valid @RequestBody client: ClientCreationRequest): ResponseEntity<*> {
+    fun modifyClient(@Valid @RequestBody client: ClientModificationRequest): ResponseEntity<*> {
         LOG.debug("REST request to update Client : {}", client.id)
 
         val updatedClient = updateClient.execute(toDomain(client))
         return ResponseEntity.ok("")
     }
 
-    @PostMapping()
-    fun createClient(@Valid @RequestBody client: ClientCreationRequest): ResponseEntity<*> {
-        LOG.debug("REST request to create Client : {}", client.id)
-
-        val updatedClient = createClient.execute(toDomain(client))
-        return ResponseEntity.ok("")
-    }
-
-    fun toDomain(clientReq: ClientCreationRequest): Client {
+    fun toDomain(clientReq: ClientModificationRequest): Client {
         return with(clientReq) {
             Client(
                 id = id,
@@ -94,7 +83,7 @@ class ClientController(
         private val LOG: Logger = LoggerFactory.getLogger(ClientController::class.java)
     }
 
-    data class ClientCreationRequest(
+    data class ClientModificationRequest(
         @field:NotNull(message = "id must not be null") var id: ClientId,
         var goals: String? = null,
         var age: Int? = null,

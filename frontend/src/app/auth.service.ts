@@ -7,7 +7,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string) {
-    return this.http.post('/auth/login', { username, password }).pipe(
+    return this.http.post('/api/auth/login', { username, password }).pipe(
       tap((res: any) => localStorage.setItem('auth_token', res.token))
     );
   }
