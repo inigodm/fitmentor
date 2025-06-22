@@ -13,5 +13,39 @@ spring:
         enabled: true
     main:
         allow-bean-definition-overriding: true
+    zookeeper:
+        image: confluentinc/cp-zookeeper:7.9.1
+        container_name: zookeeper
+        ports:
+            - "2181:2181"
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+    kafka:
+        bootstrap-servers: localhost:9092
+        consumer:
+            group-id: projections
+            auto-offset-reset: latest
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        producer:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    kafdrop:
+        image: obsidiandynamics/kafdrop
+        container_name: kafdrop
+        ports:
+            - "9000:9000"
+        environment:
+            KAFKA_BROKERCONNECT: kafka:29092
+            JVM_OPTS: "-Xms32M -Xmx64M"
+        depends_on:
+            - kafka
 server:
     port: 8080
+
+logging:
+    level:
+        org:
+            springframework:
+                security: DEBUG
