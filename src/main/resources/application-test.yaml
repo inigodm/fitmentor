@@ -1,0 +1,32 @@
+spring.application.name: fitmentor
+spring:
+    datasource:
+        url: jdbc:h2:mem:base
+        driver-class-name: org.h2.Driver
+        username: sa
+        password:
+    flyway:
+        locations: classpath:db/migration
+        enabled: true
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.H2Dialect
+    main:
+        allow-bean-definition-overriding: true
+server:
+    port: 8080
+jwt:
+    secret: |
+        random string dfsdfenrñjweugb
+        must be a long string in order to 
+        have more than 256 bytes, so I think that I should 
+        write some more characters here: 
+        lets see: 1, 2, 3
+    issuer: "fitmentor"
+    audience: "user"
+    header: Authorization
+    prefix: Bearer
+    token-type: JWT
