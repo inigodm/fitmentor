@@ -26,6 +26,7 @@ class BearerService(
             .claim("jti", UUID.randomUUID().toString())
             .claim("id", id)
             .claim("sub", username)
+            .claim("name", username)
             .claim("email", email)
             .claim("userRole", userRole)
             .claim("clientId", clientId?.toString())
@@ -46,10 +47,12 @@ class BearerService(
             .build()
             .parseClaimsJws(token) //Jwt, plaintext....
         val username = jwsClaims.getBody().subject
-        val userId = UUID.fromString(jwsClaims.getBody()!!.get<String?>("id", String::class.java))
+        val userId = UUID.fromString(jwsClaims.getBody()!!.get("id", String::class.java))
         val email = jwsClaims.getBody().get("email", String::class.java)
         val userRole = jwsClaims.getBody().get("userRole", Integer::class.java).toInt()
-        return LoggedInUser(username, email, userId, userRole)
+        val clientId = jwsClaims.getBody().get("clientId", String::class.java)
+        val coachId = jwsClaims.getBody().get("coachId", String::class.java)
+        return LoggedInUser(username, email, userId, userRole, clientId, coachId)
     }
 
     override fun isSignatureValid(token: String): Boolean {
@@ -67,4 +70,8 @@ class BearerService(
 }
 
 @JvmRecord
-data class LoggedInUser(val name: String, val email: String, val id: UUID, val userRole: Int)
+data class LoggedInUser(val name: String, val email: String, val id: UUID, val userRole: Int, val clientId: String?, val coachId: String?) {
+    fun isCoach(): Boolean = userRole == 1
+    fun isClient(): Boolean = userRole == 2
+    fun isAdmin(): Boolean = userRole == 3
+}

@@ -1,5 +1,6 @@
 package com.inigo.fitmentor.coach.domain
 
+import com.inigo.arch.shared.domain.AggregateRoot
 import com.inigo.fitmentor.client.domain.Client
 import com.inigo.shared.domain.ClientId
 import com.inigo.shared.domain.CoachId
@@ -13,5 +14,6 @@ interface CoachService {
 
     fun findByCoachId(id: CoachId): Coach?
     fun existsUser(coach: Coach): Boolean
+    fun existsCoach(root: Coach): Boolean
 
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class UpdateClient(val store: ClientService) {
   fun execute(client: Client) {
-    client.ensureUserExists(store) // No se si es necesario
+    client.ensureUserExists(store)
     client.save(store)
     client.publishEvents()
   }

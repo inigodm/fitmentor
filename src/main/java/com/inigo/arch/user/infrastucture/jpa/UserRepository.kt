@@ -9,6 +9,7 @@ import com.inigo.arch.user.domain.Username
 import com.inigo.arch.user.infrastucture.UnauthorizedError
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class UserRepository(val repo : UserJpaRepository,
@@ -23,18 +24,18 @@ class UserRepository(val repo : UserJpaRepository,
         if (!bCryptEncoder.matches(password.value, user.password)) {
             throw UnauthorizedError.becauseUserOrPasswordNotFonud(username.value)
         }
-        return when (Role.valueOf(user.role)) {
+        return when (Role.valueOf(user.role.uppercase())) {
             Role.COACH -> AuthenticationData(
                 user.id,
                 null,
-                repo.findCoachIdByuserId(user.id.toString()),
+                repo.findCoachIdByUserId(user.id),
                 user.username,
                 user.email,
                 Role.COACH.ordinal
             )
             Role.CLIENT -> AuthenticationData(
                 user.id,
-                repo.findClientIdByuserId(user.id.toString()),
+                repo.findClientIdByUserId(user.id),
                 null,
                 user.username,
                 user.email,
@@ -77,4 +78,10 @@ class UserRepository(val repo : UserJpaRepository,
     override fun existsUsername(user: User) = repo.findByUsername(user.username.value).isPresent
 
     override fun existsEmail(user: User) = repo.findByEmail(user.email.value).isPresent
+    override fun updateUserType(userId: UUID, type: String) {
+        val updatedRows = repo.updateUserTypeById(userId, type)
+        if (updatedRows == 0) {
+            throw IllegalArgumentException("User with ID $userId not found or type update failed.")
+        }
+    }
 }

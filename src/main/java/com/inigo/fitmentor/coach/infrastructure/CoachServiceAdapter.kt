@@ -1,5 +1,6 @@
 package com.inigo.fitmentor.coach.infrastructure
 
+import com.inigo.arch.shared.domain.AggregateRoot
 import com.inigo.arch.user.infrastucture.jpa.UserJpaRepository
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.fitmentor.coach.domain.CoachService
@@ -47,6 +48,11 @@ open class CoachServiceAdapter(
     override fun existsUser(coach: Coach) : Boolean {
         LOG.debug("Request to check existence of Coach : {}  as user : {}", coach.id.value, coach.user.value)
         return userJpaRepository.findById(coach.user.value).isPresent
+    }
+
+    override fun existsCoach(coach: Coach): Boolean {
+        LOG.debug("Request to check existence of Coach : {}", coach.id.value)
+        return coachRepository.findById(coach.user.value).isPresent
     }
 
     companion object {

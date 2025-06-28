@@ -1,5 +1,7 @@
 package com.inigo.fitmentor
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.inigo.arch.ArchApplication
 import com.inigo.arch.UserUtils
@@ -12,14 +14,17 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import java.util.UUID
 
-@SpringBootTest(classes = [ArchApplication::class])
+@SpringBootTest(classes = [ArchApplication::class],
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class FitmentorTests {
+
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -38,7 +43,7 @@ class FitmentorTests {
             uuid = userId,
             name = "client1",
             email = "client1@email.com",
-            role = Role.CLIENT.name)
+            role = Role.USER.name)
 
         val token = UserUtils.obtainToken(mockMvc, name = "client1")
 
@@ -86,7 +91,7 @@ class FitmentorTests {
             uuid = userId,
             name = "client2",
             email = "client2@email.com",
-            role = Role.COACH.name)
+            role = Role.USER.name)
 
         val token = UserUtils.obtainToken(mockMvc, name = "client2")
 
@@ -115,5 +120,59 @@ class FitmentorTests {
         assert(coach?.get("photo") == "https://example.com/photo.jpg")
         assert(coach?.get("phonenumber") == "123456789")
 
+    }
+
+    @Test
+    fun `should create plans`() {
+        val userIdCo = "00000000-0000-0000-0000-000000000045"
+        val userIdCl = "00000000-0000-0000-0000-000000000046"
+        val clientId = "00000000-0000-0000-0000-000000000023"
+        val coachId = "00000000-0000-0000-0000-000000000005"
+        val planId = "123e4567-e89b-12d3-a456-426614174001"
+
+        UserUtils.generateUser(mockMvc,
+            uuid = userIdCl,
+            name = "clientPl",
+            email = "clientP@email.com",
+            role = Role.USER.name)
+
+        UserUtils.generateUser(mockMvc,
+            uuid = userIdCo,
+            name = "coachPl",
+            email = "coach@email.com",
+            role = Role.USER.name)
+
+
+        val tokenCl = UserUtils.obtainToken(mockMvc, name = "clientPl")
+        ClientUtils.generateClient(mockMvc,
+            user = userIdCl,
+            id = clientId,
+            coach = "00000000-0000-0000-0000-000000000005",
+            token = tokenCl)
+
+        var tokenCo = UserUtils.obtainToken(mockMvc, name = "coachPl")
+        CoachUtils.generateCoach(mockMvc,
+            user = userIdCo,
+            photo = "https://example.com/photo.jpg",
+            id = coachId,
+            token = tokenCo)
+
+        tokenCo = UserUtils.obtainToken(mockMvc, name = "coachPl")
+
+        PlanUtils.generatePlan(
+            mockMvc = mockMvc,
+            id = planId,
+            client = clientId,
+            coach = coachId,
+            token = tokenCo)
+
+        val plan = PlanUtils.getPlan(mockMvc, tokenCo, clientId)
+
+        assertNotNull(plan)
+        val planMap = plan!!.get(0) as Map<String, Any>
+        assertThat(planMap.get("id")).isEqualTo(planId)
+        assertThat(planMap.get("client")).isEqualTo(clientId)
+        assertThat(planMap.get("coach")).isEqualTo(coachId)
+        assertThat(planMap.get("description")).isEqualTo("Plan de entrenamiento personalizado")
     }
 }

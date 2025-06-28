@@ -38,4 +38,5 @@ interface ClientService {
      */
     fun delete(id: UUID)
     fun existsUser(client: Client): Boolean
+    fun existsClient(client: Client): Boolean
 }

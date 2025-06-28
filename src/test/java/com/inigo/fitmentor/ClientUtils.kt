@@ -2,7 +2,6 @@ package com.inigo.fitmentor
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.inigo.arch.UserUtils.Companion.objectMapper
-import com.inigo.arch.user.domain.Token
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -28,7 +27,7 @@ class ClientUtils {
                 "user" to user,
                 "coach" to coach)
             val content = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/user/clients")
+                MockMvcRequestBuilders.post("/api/user/clients")
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", token)
                     .content(objectMapper.writeValueAsString(userRequest))

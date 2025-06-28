@@ -1,9 +1,6 @@
 package com.inigo.fitmentor.coach.infrastructure
 
-import com.inigo.fitmentor.client.domain.Client
-import com.inigo.fitmentor.client.infrastructure.ClientJpa
 import com.inigo.fitmentor.coach.domain.Coach
-import com.inigo.shared.domain.ClientId
 import com.inigo.shared.domain.CoachId
 import com.inigo.shared.domain.UserId
 import jakarta.persistence.*

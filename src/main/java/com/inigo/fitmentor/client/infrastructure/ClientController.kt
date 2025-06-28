@@ -1,5 +1,6 @@
 package com.inigo.fitmentor.client.infrastructure
 
+import com.inigo.fitmentor.client.application.CreateClient
 import com.inigo.fitmentor.client.application.FindClient
 import com.inigo.fitmentor.client.application.UpdateClient
 import com.inigo.fitmentor.client.domain.Client
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -28,7 +30,8 @@ import java.util.*
 @Validated
 class ClientController(
     val findClient: FindClient,
-    val updateClient: UpdateClient) {
+    val updateClient: UpdateClient,
+    val createClient: CreateClient){
 
     /**
      * `GET  /clients/:id` : get the "id" client.
@@ -60,7 +63,15 @@ class ClientController(
     fun modifyClient(@Valid @RequestBody client: ClientModificationRequest): ResponseEntity<*> {
         LOG.debug("REST request to update Client : {}", client.id)
 
-        val updatedClient = updateClient.execute(toDomain(client))
+        updateClient.execute(toDomain(client))
+        return ResponseEntity.ok("")
+    }
+
+    @PostMapping()
+    fun createClient(@Valid @RequestBody client: ClientModificationRequest): ResponseEntity<*> {
+        LOG.debug("REST request to create Client : {}", client.id)
+
+        createClient.execute(toDomain(client))
         return ResponseEntity.ok("")
     }
 

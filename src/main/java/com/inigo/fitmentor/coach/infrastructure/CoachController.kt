@@ -1,7 +1,7 @@
 package com.inigo.fitmentor.coach.infrastructure
 
+import com.inigo.fitmentor.coach.application.CreateCoach
 import com.inigo.fitmentor.coach.application.FindCoach
-import com.inigo.fitmentor.coach.application.UpdateCoach
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.shared.domain.CoachId
 import com.inigo.shared.domain.UserId
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -28,7 +28,7 @@ import java.util.*
 @Validated
 class CoachController(
     val findCoach: FindCoach,
-    val updateCoach: UpdateCoach) {
+    val createCoach: CreateCoach) {
 
     /**
      * `GET  /coachs/:id` : get the "id" client.
@@ -53,11 +53,11 @@ class CoachController(
         }
     }
 
-    @PutMapping()
+    @PostMapping()
     fun modifyCoach(@Valid @RequestBody coach: CoachModificationRequest): ResponseEntity<*> {
         LOG.debug("REST request to update Coach : {}", coach.id)
 
-        val updatedCoach = updateCoach.execute(toDomain(coach))
+        val updatedCoach = createCoach.execute(toDomain(coach))
         return ResponseEntity.ok("")
     }
 

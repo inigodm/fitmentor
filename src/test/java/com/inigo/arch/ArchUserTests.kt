@@ -10,17 +10,20 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType
+import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.util.UUID
 
-@SpringBootTest
+@SpringBootTest(classes = [ArchApplication::class],
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 internal class ArchUserTests {
+
+    @LocalServerPort
+    private var port: Int = 0
+
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -33,7 +36,8 @@ internal class ArchUserTests {
     @Test
     fun `create user and verify in database`() {
         // Body de la solicitud
-        UserUtils.generateUser(mockMvc)
+        UserUtils.generateUser(mockMvc,
+            role = "USER")
 
         val savedUser = entityManager
             .createQuery("SELECT u FROM UserJpa u WHERE u.id = :id", UserJpa::class.java)
@@ -48,9 +52,9 @@ internal class ArchUserTests {
 
     @Test
     fun `should get a token`() {
-        // Body de la solicitud
+        println("Port: $port")
         val token = UserUtils.obtainToken(mockMvc)
-
+        println("Token: $token")
         assertThat(token).startsWith("""Bearer """)
     }
 }

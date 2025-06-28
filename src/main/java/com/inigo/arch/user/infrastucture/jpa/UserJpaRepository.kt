@@ -1,7 +1,8 @@
 package com.inigo.arch.user.infrastucture.jpa
 
+import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.NativeQuery
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
@@ -12,10 +13,14 @@ import java.util.UUID
 interface UserJpaRepository : JpaRepository<UserJpa, UUID> {
     fun findByUsername(username: String): Optional<UserJpa>
 
-    @Query("SELECT id FROM clients c WHERE c.user_id = :userId", nativeQuery = true)
-    fun findClientIdByuserId(@Param("userId") userId: String): UUID
+    @Query("SELECT id FROM ClientJpa c WHERE c.user = :userId")
+    fun findClientIdByUserId(@Param("userId") userId: UUID): UUID
 
-    @Query("SELECT id FROM coachs c WHERE c.user_id = :userId", nativeQuery = true)
-    fun findCoachIdByuserId(@Param("userId") userId: String): UUID
+    @Query("SELECT id FROM CoachJpa c WHERE c.user = :userId")
+    fun findCoachIdByUserId(@Param("userId") userId: UUID): UUID
     fun findByEmail(email: String): Optional<UserJpa>
+    @Modifying
+    @Transactional
+    @Query("UPDATE UserJpa u SET u.role = :role WHERE u.id = :id")
+    fun updateUserTypeById(id: UUID, role: String): Int
 }

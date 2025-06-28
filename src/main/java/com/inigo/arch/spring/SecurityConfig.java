@@ -43,7 +43,9 @@ public class SecurityConfig {
             auth
                 .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/user").permitAll()
-                .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui*", "/v3/*").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/h2-console").permitAll()
+                    .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui*", "/v3/*").permitAll()
                 // The rest of them will be private
                 .requestMatchers("/**").authenticated();
         });
@@ -67,4 +69,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }

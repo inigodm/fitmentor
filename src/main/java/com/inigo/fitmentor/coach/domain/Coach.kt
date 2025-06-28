@@ -6,6 +6,8 @@ import com.inigo.fitmentor.client.domain.ClientService
 import com.inigo.shared.domain.ClientId
 import com.inigo.shared.domain.CoachId
 import com.inigo.shared.domain.UserId
+import com.inigo.shared.domain.events.CoachCreated
+import com.inigo.shared.domain.events.CoachUpdated
 import jakarta.persistence.Column
 import jakarta.persistence.Id
 import java.util.UUID
@@ -27,6 +29,17 @@ class Coach(
 
   fun save(store: CoachService): Coach {
     store.save(this)
+    record(CoachUpdated(coachId = this.id.value, userId = this.user.value))
     return this
+  }
+
+  fun create(store: CoachService): Coach {
+    store.save(this)
+    record(CoachCreated(coachId = this.id.value, userId = this.user.value))
+    return this
+  }
+
+  fun alreadyExists(store: CoachService): Boolean {
+    return store.existsCoach(this)
   }
 }

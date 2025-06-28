@@ -2,6 +2,7 @@ package com.inigo.arch
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.inigo.arch.user.domain.Role
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -11,7 +12,13 @@ import java.util.Map
 
 class UserUtils {
     companion object {
-        val objectMapper: ObjectMapper = ObjectMapper()
+        val objectMapper: ObjectMapper
+
+        init {
+            objectMapper = ObjectMapper()
+            objectMapper.findAndRegisterModules()
+            objectMapper.registerModule(JavaTimeModule())
+        }
 
         fun generateUser(mockMvc: MockMvc,
                          uuid: String = "00000000-0000-0000-0000-000000000004",

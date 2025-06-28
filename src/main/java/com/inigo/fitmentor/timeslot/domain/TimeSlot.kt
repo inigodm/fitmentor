@@ -7,8 +7,7 @@ import com.inigo.shared.domain.CoachId
 import com.inigo.shared.domain.PlanId
 import com.inigo.shared.domain.TimeSlotId
 import java.time.DayOfWeek
-import java.time.LocalTime
-import java.util.UUID
+import java.time.Instant
 
 /**
  *
@@ -24,8 +23,8 @@ data class TimeSlot(
     val coach: CoachId,
     val plan: PlanId,
     val dayOfWeek: DayOfWeek,
-    val startTime: LocalTime,
-    val endTime: LocalTime
+    val startTime: Instant,
+    val endTime: Instant
 ) {
 
 }
