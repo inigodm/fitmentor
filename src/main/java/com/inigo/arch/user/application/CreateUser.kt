@@ -26,14 +26,19 @@ class CreateUser(val store: UserStore) {
             role = role
         )
         if (store.existsUserId(user)) {
-            throw IllegalArgumentException("User with id ${id} already exists")
+            LOG.warn("User with id ${id} already exists")
+            return
         }
         if (store.existsEmail(user)) {
-            throw IllegalArgumentException("User with id ${email} already exists")
+            throw IllegalArgumentException("User with email ${email} already exists")
         }
         if (store.existsUsername(user)) {
             throw IllegalArgumentException("User with username ${username} already exists")
         }
         store.save(user)
+    }
+
+    companion object {
+        private val LOG = org.slf4j.LoggerFactory.getLogger(CreateUser::class.java)
     }
 }

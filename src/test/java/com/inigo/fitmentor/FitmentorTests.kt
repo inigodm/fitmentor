@@ -35,7 +35,7 @@ class FitmentorTests {
     private lateinit var entityManager: EntityManager
 
     @Test
-    fun `should create clients`() {
+    fun `client creation should be idempotent and answer with a 200`() {
         val userId =  "00000000-0000-0000-0000-000000000042"
         val clientId = "00000000-0000-0000-0000-000000000023"
 
@@ -46,6 +46,12 @@ class FitmentorTests {
             role = Role.USER.name)
 
         val token = UserUtils.obtainToken(mockMvc, name = "client1")
+
+        ClientUtils.generateClient(mockMvc,
+            user = userId,
+            id = clientId,
+            coach = "00000000-0000-0000-0000-000000000005",
+            token = token)
 
         ClientUtils.generateClient(mockMvc,
             user = userId,
@@ -83,7 +89,15 @@ class FitmentorTests {
     }
 
     @Test
-    fun `should create coaches`() {
+    fun `should return a 404 if client does not exist when doing a get`() {
+        val token = UserUtils.obtainToken(mockMvc, name = "client1")
+
+        val client = ClientUtils.getClient(mockMvc, token, "00000000-0000-0000-0000-000000000999")
+
+    }
+
+    @Test
+    fun `coaches creation should be idempotent and answer with a 200`() {
         val userId =  "00000000-0000-0000-0000-000000000044"
         val coachId = "00000000-0000-0000-0000-000000000023"
 
@@ -94,6 +108,12 @@ class FitmentorTests {
             role = Role.USER.name)
 
         val token = UserUtils.obtainToken(mockMvc, name = "client2")
+
+        CoachUtils.generateCoach(mockMvc,
+            user = userId,
+            photo = "https://example.com/photo.jpg",
+            id = coachId,
+            token = token)
 
         CoachUtils.generateCoach(mockMvc,
             user = userId,

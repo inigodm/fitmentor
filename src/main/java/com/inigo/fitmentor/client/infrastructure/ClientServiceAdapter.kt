@@ -5,6 +5,7 @@ import com.inigo.fitmentor.client.domain.Client
 import com.inigo.fitmentor.client.domain.ClientService
 import com.inigo.fitmentor.client.infrastructure.ClientJpa.Companion.fromDomain
 import com.inigo.shared.domain.ClientId
+import com.inigo.shared.domain.errors.NotFoundError
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -39,7 +40,8 @@ open class ClientServiceAdapter(
     override fun findByClientId(id: ClientId): Client? {
         LOG.debug("Request to get Client : {}", id.value)
         return clientRepository.findById(id.value)
-            .map(Function { obj: ClientJpa -> obj.toDomain() }).orElse(null)
+            .map(Function { obj: ClientJpa -> obj.toDomain() })
+            .orElseThrow{ NotFoundError.becauseNoClientExistForGivenId(id.value.toString()) }
     }
 
     override fun delete(id: UUID) {

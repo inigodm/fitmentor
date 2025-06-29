@@ -5,6 +5,7 @@ import com.inigo.arch.user.infrastucture.jpa.UserJpaRepository
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.fitmentor.coach.domain.CoachService
 import com.inigo.shared.domain.CoachId
+import com.inigo.shared.domain.errors.NotFoundError
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -37,7 +38,8 @@ open class CoachServiceAdapter(
     override fun findByCoachId(id: CoachId): Coach? {
         LOG.debug("Request to get Coach : {}", id.value)
         return coachRepository.findById(id.value)
-            .map(Function { obj: CoachJpa -> obj.toDomain() }).orElse(null)
+            .map(Function { obj: CoachJpa -> obj.toDomain() })
+            .orElseThrow {NotFoundError.becauseNoCoachExistForGivenId( id.value.toString()) }
     }
 
     fun delete(id: UUID) {
