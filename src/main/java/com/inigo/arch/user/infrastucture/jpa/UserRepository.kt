@@ -7,7 +7,7 @@ import com.inigo.arch.user.domain.Password
 import com.inigo.arch.user.domain.Role
 import com.inigo.arch.user.domain.Username
 import com.inigo.arch.user.infrastucture.UnauthorizedError
-import com.inigo.shared.domain.errors.NotFoundError
+import com.inigo.arch.shared.domain.errors.NotFoundError
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.UUID

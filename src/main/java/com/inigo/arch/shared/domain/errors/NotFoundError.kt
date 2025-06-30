@@ -1,4 +1,4 @@
-package com.inigo.shared.domain.errors
+package com.inigo.arch.shared.domain.errors
 
 class NotFoundError: RuntimeException {
     private constructor(message: String) : super(message)

@@ -1,11 +1,10 @@
 package com.inigo.fitmentor.coach.infrastructure
 
-import com.inigo.arch.shared.domain.AggregateRoot
 import com.inigo.arch.user.infrastucture.jpa.UserJpaRepository
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.fitmentor.coach.domain.CoachService
 import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.errors.NotFoundError
+import com.inigo.arch.shared.domain.errors.NotFoundError
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
