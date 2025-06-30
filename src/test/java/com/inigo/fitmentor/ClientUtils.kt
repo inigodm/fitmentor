@@ -10,11 +10,13 @@ import kotlin.random.Random
 
 class ClientUtils {
     companion object {
-        fun generateClient(mockMvc: MockMvc,
-                         user: String = "00000000-0000-0000-0000-000000000004",
-                           id: String = "123e4567-e89b-12d3-a456-426614174000",
-                         coach: String = "123e4567-e89b-12d3-a456-426614174002",
-                           token: String) {
+        fun generateClient(
+            mockMvc: MockMvc,
+            user: String = "00000000-0000-0000-0000-000000000004",
+            id: String = "123e4567-e89b-12d3-a456-426614174000",
+            coach: String = "123e4567-e89b-12d3-a456-426614174002",
+            token: String
+        ) {
             val userRequest = mapOf(
                 "id" to id,
                 "goals" to "Perder peso y ganar músculo",
@@ -25,7 +27,8 @@ class ClientUtils {
                 "preferedTrainingStyle" to "Entrenamiento funcional",
                 "phonenumber" to "123456789",
                 "user" to user,
-                "coach" to coach)
+                "coach" to coach
+            )
             val content = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/user/clients")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -35,15 +38,34 @@ class ClientUtils {
                 .andExpect(MockMvcResultMatchers.status().isOk)
         }
 
-        fun getClient(mockMvc: MockMvc, token:String, clientId: String = "123e4567-e89b-12d3-a456-426614174000"): Map<String, Any>? {
+        fun getClient(
+            mockMvc: MockMvc,
+            token: String,
+            clientId: String = "123e4567-e89b-12d3-a456-426614174000"
+        ): Map<String, Any>? {
             val content = mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/user/clients/$clientId")
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", token)
             )
                 .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn().response.contentAsString
+                .andReturn().response.contentAsString
             return objectMapper.readValue(content, object : TypeReference<Map<String, Any>>() {})
+        }
+
+        fun getClientError(
+            mockMvc: MockMvc,
+            token: String,
+            responseStatus: Int,
+            clientId: String = "123e4567-e89b-12d3-a456-426614174000"
+        ): String {
+            return mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/user/clients/$clientId")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", token)
+            )
+                .andExpect(MockMvcResultMatchers.status().`is`(responseStatus))
+                .andReturn().response.contentAsString
         }
     }
 }

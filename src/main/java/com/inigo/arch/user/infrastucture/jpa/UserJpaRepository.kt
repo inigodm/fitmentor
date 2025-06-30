@@ -14,10 +14,10 @@ interface UserJpaRepository : JpaRepository<UserJpa, UUID> {
     fun findByUsername(username: String): Optional<UserJpa>
 
     @Query("SELECT id FROM ClientJpa c WHERE c.user = :userId")
-    fun findClientIdByUserId(@Param("userId") userId: UUID): UUID
+    fun findClientIdByUserId(@Param("userId") userId: UUID): UUID?
 
     @Query("SELECT id FROM CoachJpa c WHERE c.user = :userId")
-    fun findCoachIdByUserId(@Param("userId") userId: UUID): UUID
+    fun findCoachIdByUserId(@Param("userId") userId: UUID): UUID?
     fun findByEmail(email: String): Optional<UserJpa>
     @Modifying
     @Transactional

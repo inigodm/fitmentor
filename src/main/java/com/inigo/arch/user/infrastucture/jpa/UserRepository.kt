@@ -7,6 +7,7 @@ import com.inigo.arch.user.domain.Password
 import com.inigo.arch.user.domain.Role
 import com.inigo.arch.user.domain.Username
 import com.inigo.arch.user.infrastucture.UnauthorizedError
+import com.inigo.shared.domain.errors.NotFoundError
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -28,14 +29,14 @@ class UserRepository(val repo : UserJpaRepository,
             Role.COACH -> AuthenticationData(
                 user.id,
                 null,
-                repo.findCoachIdByUserId(user.id),
+                repo.findCoachIdByUserId(user.id) ?: throw NotFoundError.becauseUserIsNotCoach(user.id.toString()),
                 user.username,
                 user.email,
                 Role.COACH.ordinal
             )
             Role.CLIENT -> AuthenticationData(
                 user.id,
-                repo.findClientIdByUserId(user.id),
+                repo.findClientIdByUserId(user.id) ?: throw NotFoundError.becauseUserIsNotClient(user.id.toString()),
                 null,
                 user.username,
                 user.email,

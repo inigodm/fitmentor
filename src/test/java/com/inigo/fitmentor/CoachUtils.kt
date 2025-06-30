@@ -40,5 +40,20 @@ class CoachUtils {
             .andReturn().response.contentAsString
             return objectMapper.readValue(content, object : TypeReference<Map<String, Any>>() {})
         }
+
+        fun getCoachError(
+            mockMvc: MockMvc,
+            token: String,
+            responseStatus: Int,
+            coachId: String = "123e4567-e89b-12d3-a456-426614174000"
+        ): String {
+            return mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/user/coachs/$coachId")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", token)
+            )
+                .andExpect(MockMvcResultMatchers.status().`is`(responseStatus))
+                .andReturn().response.contentAsString
+        }
     }
 }

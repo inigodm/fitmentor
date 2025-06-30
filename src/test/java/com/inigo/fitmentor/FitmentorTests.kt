@@ -89,10 +89,19 @@ class FitmentorTests {
     }
 
     @Test
-    fun `should return a 404 if client does not exist when doing a get`() {
+    fun `should return a 404 if client or coach does not exist when doing a get`() {
+        val userId =  "00000000-0000-0000-0000-000000000042"
+
+        UserUtils.generateUser(mockMvc,
+            uuid = userId,
+            name = "client1",
+            email = "client1@email.com",
+            role = Role.USER.name)
+
         val token = UserUtils.obtainToken(mockMvc, name = "client1")
 
-        val client = ClientUtils.getClient(mockMvc, token, "00000000-0000-0000-0000-000000000999")
+        ClientUtils.getClientError(mockMvc, token, 404, "00000000-0000-0000-0000-000000000999")
+        CoachUtils.getCoachError(mockMvc, token, 404, "00000000-0000-0000-0000-000000000999")
 
     }
 
