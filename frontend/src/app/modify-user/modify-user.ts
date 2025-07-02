@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { v7 as uuidv7 } from 'uuid';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,15 +21,18 @@ export class CreateUser implements OnInit {
   role = '';
   error = '';
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
 
   createUser() {
     if (this.password != this.passwordCheck) {
       this.error = "Las contraseñas no coinciden";
     } else {
-      this.http.put('/api/user', { id: this.id, username: this.username, password: this.password, email: this.email, role: this.role }).subscribe({
+      this.http.put('/api/user',
+        { id: this.id, username: this.username, password: this.password, email: this.email, role: this.role },
+        { responseType: 'text'}).subscribe({
         next: () => {
           console.log('Usuario creado exitosamente');
+          this.router.navigate(['/ruta-destino']);
           this.error = '';
         },
         error: (err) => {
