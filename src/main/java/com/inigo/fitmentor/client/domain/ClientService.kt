@@ -1,7 +1,6 @@
 package com.inigo.fitmentor.client.domain
 
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.ClientId
 import java.util.UUID
 
 /**

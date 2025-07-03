@@ -1,6 +1,5 @@
-package com.inigo.shared.domain
+package com.inigo.fitmentor.shared.domain
 
-import com.inigo.shared.domain.ClientId
 import java.util.UUID
 
 data class TimeSlotId(val value: UUID) {

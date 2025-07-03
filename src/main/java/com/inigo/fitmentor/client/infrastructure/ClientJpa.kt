@@ -1,8 +1,8 @@
 package com.inigo.fitmentor.client.infrastructure
 
 import com.inigo.fitmentor.client.domain.Client
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.UserId
 import jakarta.persistence.*
 import java.io.Serializable
 import java.util.UUID

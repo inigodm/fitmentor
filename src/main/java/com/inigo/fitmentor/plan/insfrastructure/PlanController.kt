@@ -4,9 +4,9 @@ import com.inigo.arch.spring.BearerService
 import com.inigo.fitmentor.plan.application.GetPlans
 import com.inigo.fitmentor.plan.application.UpdatePlan
 import com.inigo.fitmentor.plan.model.Plan
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.PlanId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.PlanId
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import org.slf4j.Logger

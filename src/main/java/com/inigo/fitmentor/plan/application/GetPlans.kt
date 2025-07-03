@@ -2,8 +2,8 @@ package com.inigo.fitmentor.plan.application
 
 import com.inigo.fitmentor.plan.model.Plan
 import com.inigo.fitmentor.plan.model.PlanStore
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.CoachId
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,7 +1,7 @@
 package com.inigo.fitmentor.plan.model
 
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.CoachId
 
 interface PlanStore {
     fun save(plan: Plan)

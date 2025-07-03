@@ -1,16 +1,10 @@
 package com.inigo.fitmentor.coach.domain
 
 import com.inigo.arch.shared.domain.AggregateRoot
-import com.inigo.fitmentor.client.domain.Client
-import com.inigo.fitmentor.client.domain.ClientService
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.UserId
-import com.inigo.shared.domain.events.CoachCreated
-import com.inigo.shared.domain.events.CoachUpdated
-import jakarta.persistence.Column
-import jakarta.persistence.Id
-import java.util.UUID
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.events.CoachCreated
+import com.inigo.fitmentor.shared.domain.events.CoachUpdated
 
 class Coach(
   val id: CoachId,
@@ -18,7 +12,7 @@ class Coach(
   val presentation: String? = null,
   var phonenumber: String? = null,
   val user: UserId
-) : AggregateRoot() {
+) : AggregateRoot(name = "snapshots.coach") {
 
   fun ensureUserExists(store: CoachService): Coach {
     if (!store.existsUser(this)) {

@@ -1,12 +1,11 @@
 package com.inigo.fitmentor.timeslot.application
 
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.PlanId
-import com.inigo.shared.domain.TimeSlotId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.PlanId
+import com.inigo.fitmentor.shared.domain.TimeSlotId
 import java.time.DayOfWeek
 import java.time.LocalTime
-import java.util.UUID
 
 class CreateTimeSlot {
     fun execute(id: TimeSlotId,

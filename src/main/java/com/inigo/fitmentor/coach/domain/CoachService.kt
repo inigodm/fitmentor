@@ -1,10 +1,6 @@
 package com.inigo.fitmentor.coach.domain
 
-import com.inigo.arch.shared.domain.AggregateRoot
-import com.inigo.fitmentor.client.domain.Client
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
-import java.util.UUID
+import com.inigo.fitmentor.shared.domain.CoachId
 
 /**
  * Service Interface for managing [com.inigo.fitmentor.client.infrastructure.ClientJpa].

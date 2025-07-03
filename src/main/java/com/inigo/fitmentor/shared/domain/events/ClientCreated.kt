@@ -1,4 +1,4 @@
-package com.inigo.shared.domain.events
+package com.inigo.fitmentor.shared.domain.events
 
 
 import java.util.UUID

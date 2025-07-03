@@ -3,8 +3,8 @@ package com.inigo.fitmentor.coach.infrastructure
 import com.inigo.fitmentor.coach.application.CreateCoach
 import com.inigo.fitmentor.coach.application.FindCoach
 import com.inigo.fitmentor.coach.domain.Coach
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.UserId
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import org.slf4j.Logger

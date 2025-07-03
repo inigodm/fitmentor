@@ -1,8 +1,8 @@
 package com.inigo.fitmentor.plan.model
 
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.PlanId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.PlanId
 import java.time.Instant
 
 data class Plan(

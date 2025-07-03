@@ -1,9 +1,9 @@
 package com.inigo.fitmentor.plan.insfrastructure
 
 import com.inigo.fitmentor.plan.model.Plan
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.PlanId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.PlanId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners

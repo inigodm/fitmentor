@@ -1,4 +1,4 @@
-package com.inigo.shared.domain
+package com.inigo.fitmentor.shared.domain
 
 import java.util.UUID
 

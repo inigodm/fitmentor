@@ -4,8 +4,8 @@ import com.inigo.fitmentor.client.application.CreateClient
 import com.inigo.fitmentor.client.application.FindClient
 import com.inigo.fitmentor.client.application.UpdateClient
 import com.inigo.fitmentor.client.domain.Client
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.UserId
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import org.slf4j.Logger

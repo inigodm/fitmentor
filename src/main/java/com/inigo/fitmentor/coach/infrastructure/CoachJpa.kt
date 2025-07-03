@@ -1,8 +1,8 @@
 package com.inigo.fitmentor.coach.infrastructure
 
 import com.inigo.fitmentor.coach.domain.Coach
-import com.inigo.shared.domain.CoachId
-import com.inigo.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.CoachId
+import com.inigo.fitmentor.shared.domain.UserId
 import jakarta.persistence.*
 import java.io.Serializable
 import java.util.UUID

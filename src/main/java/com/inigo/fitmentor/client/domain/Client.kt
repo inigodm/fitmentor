@@ -1,13 +1,10 @@
 package com.inigo.fitmentor.client.domain
 
 import com.inigo.arch.shared.domain.AggregateRoot
-import com.inigo.fitmentor.client.infrastructure.ClientController
-import com.inigo.shared.domain.ClientId
-import com.inigo.shared.domain.UserId
-import com.inigo.shared.domain.events.ClientCreated
-import com.inigo.shared.domain.events.ClientUpdated
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.UserId
+import com.inigo.fitmentor.shared.domain.events.ClientCreated
+import com.inigo.fitmentor.shared.domain.events.ClientUpdated
 
 class Client(
   val id: ClientId,
@@ -18,7 +15,7 @@ class Client(
   val equipmentAccess: Int? = null,
   val phonenumber: String? = null,
   val user: UserId
-) : AggregateRoot() {
+) : AggregateRoot(name = "snapshots.client") {
   // TODO: consider removing
   fun ensureUserExists(store: ClientService): Client {
     if (!store.existsUser(this)) {

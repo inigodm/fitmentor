@@ -4,7 +4,7 @@ import com.inigo.arch.user.infrastucture.jpa.UserJpaRepository
 import com.inigo.fitmentor.client.domain.Client
 import com.inigo.fitmentor.client.domain.ClientService
 import com.inigo.fitmentor.client.infrastructure.ClientJpa.Companion.fromDomain
-import com.inigo.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.ClientId
 import com.inigo.arch.shared.domain.errors.NotFoundError
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

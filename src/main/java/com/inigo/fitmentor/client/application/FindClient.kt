@@ -2,7 +2,7 @@ package com.inigo.fitmentor.client.application
 
 import com.inigo.fitmentor.client.domain.Client
 import com.inigo.fitmentor.client.domain.ClientService
-import com.inigo.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.ClientId
 import org.springframework.stereotype.Service
 
 @Service
