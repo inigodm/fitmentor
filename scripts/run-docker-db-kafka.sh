@@ -9,7 +9,24 @@ docker compose up db kafka kafdrop --build -d
 
 docker exec -it kafka \
   /bin/kafka-topics --create \
-                    --topic fitmentor.projections \
+                    --topic snapshots.coach \
                     --bootstrap-server kafka:9092 \
                     --partitions 1 \
-                    --replication-factor 1
+                    --replication-factor 1 \
+                    --config cleanup.policy=compact
+
+docker exec -it kafka \
+  /bin/kafka-topics --create \
+                    --topic snapshots.client \
+                    --bootstrap-server kafka:9092 \
+                    --partitions 1 \
+                    --replication-factor 1 \
+                    --config cleanup.policy=compact
+
+docker exec -it kafka \
+  /bin/kafka-topics --create \
+                    --topic snapshots.plan \
+                    --bootstrap-server kafka:9092 \
+                    --partitions 1 \
+                    --replication-factor 1 \
+                    --config cleanup.policy=compact

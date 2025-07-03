@@ -15,7 +15,7 @@ class Client(
   val equipmentAccess: Int? = null,
   val phonenumber: String? = null,
   val user: UserId
-) : AggregateRoot(name = "snapshots.client") {
+) : AggregateRoot(name = "snapshots.client", uuid = id.value) {
   // TODO: consider removing
   fun ensureUserExists(store: ClientService): Client {
     if (!store.existsUser(this)) {
