@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import java.util.UUID
@@ -22,8 +23,9 @@ import java.util.UUID
 @SpringBootTest(classes = [ArchApplication::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @ActiveProfiles("test")
-class FitmentorTests {
+class ClientTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -103,105 +105,5 @@ class FitmentorTests {
         ClientUtils.getClientError(mockMvc, token, 404, "00000000-0000-0000-0000-000000000999")
         CoachUtils.getCoachError(mockMvc, token, 404, "00000000-0000-0000-0000-000000000999")
 
-    }
-
-    @Test
-    fun `coaches creation should be idempotent and answer with a 200`() {
-        val userId =  "00000000-0000-0000-0000-000000000044"
-        val coachId = "00000000-0000-0000-0000-000000000023"
-
-        UserUtils.generateUser(mockMvc,
-            uuid = userId,
-            name = "client2",
-            email = "client2@email.com",
-            role = Role.USER.name)
-
-        val token = UserUtils.obtainToken(mockMvc, name = "client2")
-
-        CoachUtils.generateCoach(mockMvc,
-            user = userId,
-            photo = "https://example.com/photo.jpg",
-            id = coachId,
-            token = token)
-
-        CoachUtils.generateCoach(mockMvc,
-            user = userId,
-            photo = "https://example.com/photo.jpg",
-            id = coachId,
-            token = token)
-
-        val savedCoach = entityManager
-            .createQuery("SELECT u FROM CoachJpa u WHERE u.id = :id", CoachJpa::class.java)
-            .setParameter("id", UUID.fromString(coachId))
-            .singleResult
-
-        val coach = CoachUtils.getCoach(mockMvc, token, coachId)
-
-        assertNotNull(savedCoach)
-        assert(savedCoach.id.toString() == coachId)
-        assert(savedCoach.user.toString() == userId)
-        assert(savedCoach.photo == "https://example.com/photo.jpg")
-        assert(savedCoach.phonenumber == "123456789")
-
-        assertNotNull(coach)
-        assert(coach?.get("id") == coachId)
-        assert(coach?.get("user") == userId)
-        assert(coach?.get("photo") == "https://example.com/photo.jpg")
-        assert(coach?.get("phonenumber") == "123456789")
-
-    }
-
-    @Test
-    fun `should create plans`() {
-        val userIdCo = "00000000-0000-0000-0000-000000000045"
-        val userIdCl = "00000000-0000-0000-0000-000000000046"
-        val clientId = "00000000-0000-0000-0000-000000000023"
-        val coachId = "00000000-0000-0000-0000-000000000005"
-        val planId = "123e4567-e89b-12d3-a456-426614174001"
-
-        UserUtils.generateUser(mockMvc,
-            uuid = userIdCl,
-            name = "clientPl",
-            email = "clientP@email.com",
-            role = Role.USER.name)
-
-        UserUtils.generateUser(mockMvc,
-            uuid = userIdCo,
-            name = "coachPl",
-            email = "coach@email.com",
-            role = Role.USER.name)
-
-
-        val tokenCl = UserUtils.obtainToken(mockMvc, name = "clientPl")
-        ClientUtils.generateClient(mockMvc,
-            user = userIdCl,
-            id = clientId,
-            coach = "00000000-0000-0000-0000-000000000005",
-            token = tokenCl)
-
-        var tokenCo = UserUtils.obtainToken(mockMvc, name = "coachPl")
-        CoachUtils.generateCoach(mockMvc,
-            user = userIdCo,
-            photo = "https://example.com/photo.jpg",
-            id = coachId,
-            token = tokenCo)
-
-        tokenCo = UserUtils.obtainToken(mockMvc, name = "coachPl")
-
-        PlanUtils.generatePlan(
-            mockMvc = mockMvc,
-            id = planId,
-            client = clientId,
-            coach = coachId,
-            token = tokenCo)
-
-        val plan = PlanUtils.getPlan(mockMvc, tokenCo, clientId)
-
-        assertNotNull(plan)
-        val planMap = plan!!.get(0) as Map<String, Any>
-        assertThat(planMap.get("id")).isEqualTo(planId)
-        assertThat(planMap.get("client")).isEqualTo(clientId)
-        assertThat(planMap.get("coach")).isEqualTo(coachId)
-        assertThat(planMap.get("description")).isEqualTo("Plan de entrenamiento personalizado")
     }
 }

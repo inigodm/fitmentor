@@ -44,9 +44,15 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/user").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers("/h2-console").permitAll()
-                    .requestMatchers( "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-ui*", "/v3/*").permitAll()
-                // The rest of them will be private
+                .requestMatchers("/h2-console").permitAll()
+                .requestMatchers( "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui*",
+                        "/v3/**",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs*").permitAll()
+                    // The rest of them will be private
                 .requestMatchers("/**").authenticated();
         });
         // Add JWT token filter

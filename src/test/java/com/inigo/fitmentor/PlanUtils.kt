@@ -38,7 +38,7 @@ class PlanUtils {
                 .andExpect(MockMvcResultMatchers.status().isOk)
         }
 
-        fun getPlan(mockMvc: MockMvc, token:String, clientId: String = "123e4567-e89b-12d3-a456-426614174000"): List<Map<String, Any>>? {
+        fun getPlans(mockMvc: MockMvc, token:String, clientId: String = "123e4567-e89b-12d3-a456-426614174000"): List<Map<String, Any>>? {
             val content = mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/user/plans/client/$clientId")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -47,6 +47,17 @@ class PlanUtils {
                 .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn().response.contentAsString
             return objectMapper.readValue(content, object : TypeReference<List<Map<String, Any>>>() {})
+        }
+
+        fun getPlan(mockMvc: MockMvc, token:String, clientId: String, planId: String): Map<String, Any>? {
+            val content = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/user/plans/client/$clientId/plan/$planId")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", token)
+            )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn().response.contentAsString
+            return objectMapper.readValue(content, object : TypeReference<Map<String, Any>>() {})
         }
     }
 }

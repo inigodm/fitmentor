@@ -1,6 +1,6 @@
-package com.inigo.fitmentor.plan.insfrastructure
+package com.inigo.fitmentor.plan.coach.insfrastructure
 
-import com.inigo.fitmentor.plan.model.Plan
+import com.inigo.fitmentor.plan.coach.model.Plan
 import com.inigo.fitmentor.shared.domain.ClientId
 import com.inigo.fitmentor.shared.domain.CoachId
 import com.inigo.fitmentor.shared.domain.PlanId

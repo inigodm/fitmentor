@@ -1,9 +1,10 @@
-package com.inigo.fitmentor.plan.insfrastructure
+package com.inigo.fitmentor.plan.coach.insfrastructure
 
 import com.inigo.arch.spring.BearerService
-import com.inigo.fitmentor.plan.application.GetPlans
-import com.inigo.fitmentor.plan.application.UpdatePlan
-import com.inigo.fitmentor.plan.model.Plan
+import com.inigo.fitmentor.plan.coach.application.GetPlanById
+import com.inigo.fitmentor.plan.coach.application.GetPlans
+import com.inigo.fitmentor.plan.coach.application.UpdatePlan
+import com.inigo.fitmentor.plan.coach.model.Plan
 import com.inigo.fitmentor.shared.domain.ClientId
 import com.inigo.fitmentor.shared.domain.CoachId
 import com.inigo.fitmentor.shared.domain.PlanId
@@ -27,13 +28,16 @@ import java.util.UUID
 @RestController
 @RequestMapping("/api/user/plans")
 @Validated
-class PlanController(val getPlans: GetPlans, val updatePlan: UpdatePlan, val bearerService: BearerService) {
+class PlanController(val getPlans: GetPlans,
+                     val updatePlan: UpdatePlan,
+                     val getPlanById: GetPlanById,
+                     val bearerService: BearerService) {
 
         @GetMapping("/client/{clientId}")
     fun getPlan(@NotNull @PathVariable("clientId") clientId: UUID,
                 @RequestHeader("Authorization") token: String): ResponseEntity<List<PlanResponse>> {
         val coachId = bearerService.parseToken(token).coachId
-        LOG.debug("REST request to get planes for coach : {} and client: {}", coachId, clientId)
+        LOG.debug("REST request to get plans for coach : {} and client: {}", coachId, clientId)
         val plans = getPlans.execute(ClientId(clientId), CoachId(UUID.fromString(coachId)))
         return if (plans.isEmpty()) {
             ResponseEntity.notFound().build()
@@ -55,6 +59,30 @@ class PlanController(val getPlans: GetPlans, val updatePlan: UpdatePlan, val bea
             ResponseEntity.ok(res)
         }
     }
+
+    @GetMapping("/client/{clientId}/plan/{planId}")
+    fun getPlan(@NotNull @PathVariable("clientId") clientId: UUID,
+                @NotNull @PathVariable("planId") planId: UUID,
+                @RequestHeader("Authorization") token: String): ResponseEntity<PlanResponse> {
+        val coachId = bearerService.parseToken(token).coachId
+        LOG.debug("REST request to get plan $planId for coach : $coachId and client: $clientId")
+        val plan = getPlanById
+            .execute(ClientId(clientId), CoachId(UUID.fromString(coachId)), PlanId(planId)) ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok(
+            PlanResponse(
+                id = plan.id.value,
+                active = plan.active,
+                client = plan.client.value,
+                coach = plan.coach.value,
+                description = plan.description,
+                type = plan.type,
+                goals = plan.goals,
+                equipment = plan.equipment,
+                startDate = plan.startDate,
+                endDate = plan.endDate
+                )
+            )
+        }
 
     @PutMapping()
     fun modifyPlan(@Valid @RequestBody planRequest: PlanModificationRequest): ResponseEntity<*> {
