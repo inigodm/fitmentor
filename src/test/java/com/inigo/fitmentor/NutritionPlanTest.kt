@@ -49,6 +49,8 @@ class NutritionPlanTest {
     private lateinit var plan: NutritionPlanJpa
     private lateinit var token: String
     private val mealId1: UUID = UUID.randomUUID()
+    private val coachId: UUID = UUID.randomUUID()
+    private val clientId: UUID = UUID.randomUUID()
 
     @BeforeEach
     fun setup() {
@@ -75,8 +77,8 @@ class NutritionPlanTest {
 
         plan = NutritionPlanJpa(
             id = UUID.randomUUID(),
-            clientId = UUID.randomUUID(),
-            coachId = UUID.randomUUID(),
+            clientId = clientId,
+            coachId = coachId,
             description = "Test plan",
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(86400)
@@ -88,25 +90,12 @@ class NutritionPlanTest {
             username = "test-user",
             email = "test@email.com",
             id = UUID.randomUUID(),
-            clientId = UUID.randomUUID(),
-            coachId = UUID.randomUUID(),
+            clientId = clientId,
+            coachId = coachId,
             userRole = 1
         )
 
         println("Generated token: $token")
-    }
-
-    @Test
-    @Transactional
-    fun `should create a new nutritional plan`() {
-
-        val (planRequest, response) = createPlan()
-
-        val plans = entityManager.createQuery("SELECT p FROM NutritionPlanJpa p", NutritionPlanJpa::class.java).resultList
-        assert(plans.isNotEmpty())
-        assertEquals("Test plan", plans.last().description)
-        assertEquals(planRequest["clientId"], plans.last().clientId)
-        assertEquals(planRequest["coachId"], plans.last().coachId)
     }
 
     @Test
@@ -140,8 +129,8 @@ class NutritionPlanTest {
         val plans = entityManager.createQuery("SELECT p FROM NutritionPlanJpa p", NutritionPlanJpa::class.java).resultList
         assert(plans.isNotEmpty())
         assertEquals("Test plan", plans.last().description)
-        assertEquals(planRequest["clientId"], plans.last().clientId)
-        assertEquals(planRequest["coachId"], plans.last().coachId)
+        assertEquals(clientId, plans.last().clientId)
+        assertEquals(coachId, plans.last().coachId)
 
         val meals = entityManager.createQuery("SELECT m FROM MealJpa m WHERE m.id = :mealId", MealJpa::class.java)
             .setParameter("mealId", mealId1)
@@ -151,13 +140,16 @@ class NutritionPlanTest {
         assertThat(meals[0].planId).isEqualTo(plan.id)
         assertThat(meals[0].name).isEqualTo("Rize meat")
 
+        println("ClientId: $clientId - $meals")
+        println("coachId: $coachId - $meals")
+
         val component = entityManager.createQuery("SELECT c FROM MealComponentJpa c WHERE c.id = :componentId", MealComponentJpa::class.java)
             .setParameter("componentId", componentId1)
             .singleResult
         assertEquals(foodIdRice, component.foodId)
         assertEquals(100.0, component.quantity)
-        assertEquals(planRequest["clientId"], component.clientId)
-        assertEquals(planRequest["coachId"], component.coachId)
+        assertEquals(clientId, component.clientId)
+        assertEquals(coachId, component.coachId)
         assertEquals("GR", component.unit)
     }
 
@@ -212,8 +204,8 @@ class NutritionPlanTest {
 
     fun createPlan(): Pair<Map<String, Any?>, MvcResult?> {
         val planRequest = mapOf(
-            "clientId" to UUID.randomUUID(),
-            "coachId" to UUID.randomUUID(),
+            "clientId" to clientId,
+            "coachId" to coachId,
             "description" to "Test plan",
             "meals" to listOf(
                 mapOf(
