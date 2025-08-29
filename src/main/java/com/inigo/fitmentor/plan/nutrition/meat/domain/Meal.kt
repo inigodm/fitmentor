@@ -20,9 +20,10 @@ class Meal(
 ) : AggregateRoot(aggregateName = "Meal") {
 
     @Transactional
-    fun save(mealStore: MealStore, componentStore: MealComponentStore) {
+    fun save(mealStore: MealStore, componentStore: MealComponentStore, supplementIntakeStore: SupplementIntakeStore) {
         mealStore.save(this)
         mealComponents.forEach { componentStore.save(it) }
+        supplementIntakes.forEach { supplementIntakeStore.save(it) }
     }
 }
 
@@ -40,11 +41,13 @@ class MealComponent(
 enum class UnitType { GR, ML }
 
 class SupplementIntake(
-    val supplement: Supplement,
+    val id: UUID,
+    val coachId: UUID,
+    val clientId: UUID,
+    val planId: UUID,
+    val mealId: UUID,
+    val supplementId: SupplementId,
     val quantity: Double,
     val unit: UnitType
 )
 
-class Supplement(
-    val id: SupplementId
-)

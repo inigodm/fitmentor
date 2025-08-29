@@ -5,9 +5,9 @@ import com.inigo.fitmentor.plan.nutrition.meat.domain.MealComponent
 import com.inigo.fitmentor.plan.nutrition.meat.domain.MealComponentStore
 import com.inigo.fitmentor.plan.nutrition.meat.domain.MealId
 import com.inigo.fitmentor.plan.nutrition.meat.domain.MealStore
-import com.inigo.fitmentor.plan.nutrition.meat.domain.Supplement
 import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementId
 import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementIntake
+import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementIntakeStore
 import com.inigo.fitmentor.plan.nutrition.meat.domain.UnitType
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -15,7 +15,8 @@ import java.util.UUID
 @Component
 class AddMealToNutritionPlan(
     private val mealStore: MealStore,
-    private val componentStore: MealComponentStore
+    private val componentStore: MealComponentStore,
+    private val supplementIntakeStore: SupplementIntakeStore
 ) {
     fun execute(request: AddMealToNutritionPlanRequest){
         val meal = Meal(
@@ -35,17 +36,19 @@ class AddMealToNutritionPlan(
                 )
             },
             supplementIntakes = request.meal.supplements.map {
-                val supplement = Supplement(
-                    id = SupplementId(it.supplementId)
-                )
                 SupplementIntake(
-                    supplement = supplement,
+                    id = it.id,
+                    coachId = request.coachId,
+                    clientId = request.clientId,
+                    planId = request.planId,
+                    supplementId = SupplementId(it.supplementId),
+                    mealId = it.mealId,
                     quantity = it.quantity,
                     unit = UnitType.valueOf(it.unit)
                 )
             }
         )
-        meal.save(mealStore, componentStore)
+        meal.save(mealStore, componentStore, supplementIntakeStore)
     }
 }
 

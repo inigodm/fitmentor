@@ -5,10 +5,13 @@ import assertk.assertions.isEqualTo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.inigo.arch.ArchApplication
 import com.inigo.arch.spring.BearerService
+import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementId
+import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementIntake
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.FoodJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.MealComponentJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.MealJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.SupplementIntakeJpa
+import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.SupplementJpa
 import com.inigo.fitmentor.plan.nutrition.plan.infrastructure.NutritionPlanJpa
 import jakarta.persistence.EntityManager
 import jakarta.transaction.Transactional
@@ -19,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
@@ -51,6 +53,7 @@ class NutritionPlanTest {
     private val mealId1: UUID = UUID.randomUUID()
     private val coachId: UUID = UUID.randomUUID()
     private val clientId: UUID = UUID.randomUUID()
+    private val creatineId: UUID = UUID.randomUUID()
 
     @BeforeEach
     fun setup() {
@@ -72,8 +75,14 @@ class NutritionPlanTest {
             carbohydratePer100g = 78.0,
             fatPer100g = 1.0
         )
+        val creatine = SupplementJpa(
+            id = creatineId,
+            name = "Creatine",
+            description = "Supplement to improve performance",
+        )
         entityManager.persist(rice)
         entityManager.persist(chicken)
+        entityManager.persist(creatine)
 
         plan = NutritionPlanJpa(
             id = UUID.randomUUID(),
@@ -104,6 +113,7 @@ class NutritionPlanTest {
 
         val (planRequest, response) = createPlan()
         val componentId1 = UUID.randomUUID()
+        val supplementId = UUID.randomUUID()
         val mealRequest = mapOf(
             "id" to mealId1,
             "name" to "Rize meat",
@@ -117,7 +127,16 @@ class NutritionPlanTest {
                     "unit" to "GR"
                 )
             ),
-            "supplements" to emptyList<Any>()
+            "supplements" to listOf(
+                mapOf(
+                    "id" to supplementId,
+                    "mealId" to mealId1,
+                    "planId" to plan.id,
+                    "supplementId" to creatineId,
+                    "quantity" to 100.0,
+                    "unit" to "GR"
+                )
+            )
         )
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/nutrition/plans/${plan.id}/meals")
@@ -151,46 +170,44 @@ class NutritionPlanTest {
         assertEquals(clientId, component.clientId)
         assertEquals(coachId, component.coachId)
         assertEquals("GR", component.unit)
-    }
 
-    @Test
-    @Transactional
-    @WithMockUser
-    fun `should add supplementations`() {
-        val supplementationRequest = mapOf(
-            "supplementId" to UUID.randomUUID(),
-            "supplementName" to "Creatina",
-            "quantity" to 5.0,
-            "unit" to "GRAM",
-            "timeOfDay" to "Desayuno"
-        )
-
-        mockMvc.perform(
-            MockMvcRequestBuilders.post("/api/nutrition/plans/${plan.id}/supplementations")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(supplementationRequest))
-        ).andExpect(MockMvcResultMatchers.status().isOk)
-
-        val supplements = entityManager.createQuery("SELECT s FROM SupplementIntakeJpa s WHERE s.plan.id = :planId",
+        val supplement = entityManager.createQuery("SELECT c FROM SupplementIntakeJpa c WHERE c.id = :supplementId",
             SupplementIntakeJpa::class.java)
-            .setParameter("planId", plan.id)
-            .resultList
-        assert(supplements.isNotEmpty())
-        assertEquals("Creatina", supplements.first().supplementName)
-        assertEquals(5.0, supplements.first().quantity)
+            .setParameter("supplementId", supplementId)
+            .singleResult
+        assertEquals(creatineId, supplement.supplementId)
+        assertEquals(100.0, supplement.quantity)
+        assertEquals(clientId, supplement.clientId)
+        assertEquals(coachId, supplement.coachId)
+        assertEquals("GR", supplement.unit)
     }
 
     @Test
     @Transactional
-    fun `error adding unexixstent element`() {
+    fun `error adding unexistent element`() {
+        val componentId1 = UUID.randomUUID()
+        val supplementId = UUID.randomUUID()
         val mealRequest = mapOf(
-            "name" to "Comida error",
+            "id" to mealId1,
+            "name" to "Rize meat",
             "components" to listOf(
                 mapOf(
-                    "foodId" to UUID.randomUUID(), // No existe en la BD
-                    "foodName" to "Desconocido",
+                    "id" to componentId1,
+                    "mealId" to mealId1,
+                    "planId" to plan.id,
+                    "foodId" to foodIdRice,
                     "quantity" to 100.0,
-                    "unit" to "GRAM"
+                    "unit" to "GR"
+                )
+            ),
+            "supplements" to listOf(
+                mapOf(
+                    "id" to supplementId,
+                    "mealId" to mealId1,
+                    "planId" to plan.id,
+                    "supplementId" to creatineId,
+                    "quantity" to 100.0,
+                    "unit" to "GR"
                 )
             )
         )
@@ -198,8 +215,9 @@ class NutritionPlanTest {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/nutrition/plans/${plan.id}/meals")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", token)
                 .content(objectMapper.writeValueAsString(mealRequest))
-        ).andExpect(MockMvcResultMatchers.status().is5xxServerError)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 
     fun createPlan(): Pair<Map<String, Any?>, MvcResult?> {
@@ -207,19 +225,6 @@ class NutritionPlanTest {
             "clientId" to clientId,
             "coachId" to coachId,
             "description" to "Test plan",
-            "meals" to listOf(
-                mapOf(
-                    "name" to "Comida 1",
-                    "components" to listOf(
-                        mapOf(
-                            "foodId" to foodIdChicken,
-                            "quantity" to 150.0,
-                            "unit" to "GRAM"
-                        )
-                    )
-                )
-            ),
-            "supplementIntakes" to emptyList<Any>(),
             "startDate" to Instant.now().toString(),
             "endDate" to Instant.now().plusSeconds(86400).toString()
         )
