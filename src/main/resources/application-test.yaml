@@ -27,12 +27,7 @@ spring:
 server:
     port: 0
 jwt:
-    secret: |
-        random string dfsdfenrñjweugb
-        must be a long string in order to 
-        have more than 256 bytes, so I think that I should 
-        write some more characters here: 
-        lets see: 1, 2, 3
+    secret: 12345678901234567890123456789012
     issuer: "fitmentor"
     audience: "user"
     header: Authorization

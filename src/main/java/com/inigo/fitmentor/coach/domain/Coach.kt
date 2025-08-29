@@ -12,7 +12,7 @@ class Coach(
   val presentation: String? = null,
   var phonenumber: String? = null,
   val user: UserId
-) : AggregateRoot(name = "snapshots.coach", uuid = id.value) {
+) : AggregateRoot(aggregateName = "snapshots.coach", uuid = id.value) {
 
   fun ensureUserExists(store: CoachService): Coach {
     if (!store.existsUser(this)) {

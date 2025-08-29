@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class KafkaProducerService(private val kafkaTemplate: KafkaTemplate<String?, String?>,
                            val objectMapper: ObjectMapper) {
     fun <T: AggregateRoot> sendSnapshot(aggregateRoot: T) {
-        kafkaTemplate.send(aggregateRoot.name,
+        kafkaTemplate.send(aggregateRoot.aggregateName,
             aggregateRoot.uuid.toString(),
             objectMapper.writeValueAsString(aggregateRoot))
     }
