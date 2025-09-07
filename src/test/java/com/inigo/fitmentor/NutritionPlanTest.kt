@@ -5,9 +5,7 @@ import assertk.assertions.isEqualTo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.inigo.arch.ArchApplication
 import com.inigo.arch.spring.BearerService
-import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementId
-import com.inigo.fitmentor.plan.nutrition.meat.domain.SupplementIntake
-import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.FoodJpa
+import com.inigo.fitmentor.plan.nutrition.foods.infrastructure.FoodJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.MealComponentJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.MealJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.SupplementIntakeJpa
@@ -22,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -61,19 +58,19 @@ class NutritionPlanTest {
         val chicken = FoodJpa(
             id = foodIdChicken,
             name = "Pollo",
-            calPer100g = 120.0,
-            proteinPer100g = 22.0,
-            carbohydratePer100g = 0.0,
-            fatPer100g = 2.0
+            calPer100g = 120,
+            proteinPer100g = 22,
+            carbohydratePer100g = 0,
+            fatPer100g = 2
         )
         foodIdRice = UUID.randomUUID()
         val rice = FoodJpa(
             id = foodIdRice,
             name = "Arroz",
-            calPer100g = 350.0,
-            proteinPer100g = 7.0,
-            carbohydratePer100g = 78.0,
-            fatPer100g = 1.0
+            calPer100g = 350,
+            proteinPer100g = 7,
+            carbohydratePer100g = 78,
+            fatPer100g = 1
         )
         val creatine = SupplementJpa(
             id = creatineId,
@@ -208,7 +205,7 @@ class NutritionPlanTest {
                     "supplementId" to creatineId,
                     "quantity" to 100.0,
                     "unit" to "GR"
-                )
+                ) 
             )
         )
 

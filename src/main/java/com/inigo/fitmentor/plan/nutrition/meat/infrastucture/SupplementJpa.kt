@@ -7,7 +7,7 @@ import jakarta.persistence.Table
 import java.util.UUID
 
 @Entity
-@Table(name = "foods")
+@Table(name = "supplements")
 class SupplementJpa(
     @Id
     @Column(name = "id", nullable = false)
