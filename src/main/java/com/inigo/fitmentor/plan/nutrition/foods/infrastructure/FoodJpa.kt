@@ -24,6 +24,24 @@ class FoodJpa(
     @Column(name = "fat_per_100g")
     var fatPer100g: Int
 ) {
+    constructor(uuid: UUID) : this(
+        id = uuid,
+        name = "",
+        calPer100g = 0,
+        proteinPer100g = 0,
+        carbohydratePer100g = 0,
+        fatPer100g = 0
+    )
+
+    constructor() : this(
+        id = UUID.randomUUID(),
+        name = "",
+        calPer100g = 0,
+        proteinPer100g = 0,
+        carbohydratePer100g = 0,
+        fatPer100g = 0
+    )
+
     fun toDomain() = com.inigo.fitmentor.plan.nutrition.foods.domain.Food(
         id = this.id,
         name = this.name,

@@ -1,9 +1,12 @@
 package com.inigo.fitmentor.plan.nutrition.meat.infrastucture
 
+import com.inigo.fitmentor.plan.nutrition.foods.infrastructure.FoodJpa
 import com.inigo.fitmentor.plan.nutrition.meat.domain.MealComponent
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.util.UUID
 
@@ -19,8 +22,9 @@ class MealComponentJpa(
     var clientId: UUID,
     @Column(name = "meal_id")
     var mealId: UUID,
-    @Column(name = "food_id", nullable = false)
-    var foodId: UUID,
+    @ManyToOne
+    @JoinColumn(name = "food_id", referencedColumnName = "id")
+    var food: FoodJpa,
     @Column(name = "quantity")
     var quantity: Double,
     @Column(name = "unit")
@@ -31,7 +35,7 @@ class MealComponentJpa(
         coachId = UUID.randomUUID(),
         clientId = UUID.randomUUID(),
         mealId = UUID.randomUUID(),
-        foodId = UUID.randomUUID(),
+        food = FoodJpa(UUID.randomUUID()),
         quantity = 0.0,
         unit = ""
     )
@@ -43,7 +47,7 @@ class MealComponentJpa(
                 coachId = component.coachId,
                 clientId = component.clientId,
                 mealId = component.mealId,
-                foodId = component.foodId,
+                food = FoodJpa(component.food.id),
                 quantity = component.quantity,
                 unit = component.unit.name
             )

@@ -1,5 +1,6 @@
 package com.inigo.fitmentor.plan.nutrition.meat.application
 
+import com.inigo.fitmentor.plan.nutrition.meat.domain.FoodId
 import com.inigo.fitmentor.plan.nutrition.meat.domain.Meal
 import com.inigo.fitmentor.plan.nutrition.meat.domain.MealComponent
 import com.inigo.fitmentor.plan.nutrition.meat.domain.MealComponentStore
@@ -29,7 +30,7 @@ class AddMealToNutritionPlan(
                     coachId = request.coachId,
                     clientId = request.clientId,
                     planId = request.planId,
-                    foodId = it.foodId,
+                    food = FoodId(it.foodId),
                     mealId = it.mealId,
                     quantity = it.quantity,
                     unit = UnitType.valueOf(it.unit)

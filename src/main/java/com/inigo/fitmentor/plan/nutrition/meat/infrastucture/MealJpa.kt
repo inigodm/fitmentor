@@ -14,9 +14,9 @@ class MealJpa(
     @Column(name = "id", nullable = false)
     var id: UUID = UUID.randomUUID(),
     @Column(name = "name")
-    var name: String,
+    var name: String?,
     @Column(name = "plan_id")
-    var planId: UUID,
+    var planId: UUID?,
 ) {
     constructor() : this(
         id = UUID.randomUUID(),

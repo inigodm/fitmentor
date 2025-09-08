@@ -5,7 +5,6 @@ import assertk.assertions.isEqualTo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.inigo.arch.ArchApplication
 import com.inigo.arch.spring.BearerService
-import com.inigo.fitmentor.plan.nutrition.foods.infrastructure.FoodJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.MealComponentJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.MealJpa
 import com.inigo.fitmentor.plan.nutrition.meat.infrastucture.SupplementIntakeJpa
@@ -43,8 +42,8 @@ class NutritionPlanTest {
     @Autowired
     private lateinit var entityManager: EntityManager
 
-    private lateinit var foodIdRice: UUID
-    private lateinit var foodIdChicken: UUID
+    private val foodIdRice: UUID = UUID.fromString("a3333333-3333-8333-8333-833383338380")
+    private val foodIdChicken: UUID = UUID.fromString("a3333333-3333-3333-3333-333333333401")
     private lateinit var plan: NutritionPlanJpa
     private lateinit var token: String
     private val mealId1: UUID = UUID.randomUUID()
@@ -54,31 +53,11 @@ class NutritionPlanTest {
 
     @BeforeEach
     fun setup() {
-        foodIdChicken = UUID.randomUUID()
-        val chicken = FoodJpa(
-            id = foodIdChicken,
-            name = "Pollo",
-            calPer100g = 120,
-            proteinPer100g = 22,
-            carbohydratePer100g = 0,
-            fatPer100g = 2
-        )
-        foodIdRice = UUID.randomUUID()
-        val rice = FoodJpa(
-            id = foodIdRice,
-            name = "Arroz",
-            calPer100g = 350,
-            proteinPer100g = 7,
-            carbohydratePer100g = 78,
-            fatPer100g = 1
-        )
         val creatine = SupplementJpa(
             id = creatineId,
             name = "Creatine",
             description = "Supplement to improve performance",
         )
-        entityManager.persist(rice)
-        entityManager.persist(chicken)
         entityManager.persist(creatine)
 
         plan = NutritionPlanJpa(
@@ -162,7 +141,7 @@ class NutritionPlanTest {
         val component = entityManager.createQuery("SELECT c FROM MealComponentJpa c WHERE c.id = :componentId", MealComponentJpa::class.java)
             .setParameter("componentId", componentId1)
             .singleResult
-        assertEquals(foodIdRice, component.foodId)
+        assertEquals(foodIdRice, component.food.id)
         assertEquals(100.0, component.quantity)
         assertEquals(clientId, component.clientId)
         assertEquals(coachId, component.coachId)
@@ -192,7 +171,7 @@ class NutritionPlanTest {
                     "id" to componentId1,
                     "mealId" to mealId1,
                     "planId" to plan.id,
-                    "foodId" to foodIdRice,
+                    "foodId" to UUID.randomUUID(),
                     "quantity" to 100.0,
                     "unit" to "GR"
                 )

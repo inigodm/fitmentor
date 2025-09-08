@@ -15,5 +15,8 @@ class NotFoundError: RuntimeException {
 
         fun becauseUserIsNotClient(userId: String): NotFoundError =
             NotFoundError("User with ID $userId is not a client")
+
+        fun becauseNoMealFound(mealId: String, e: Exception): NotFoundError =
+            NotFoundError("Problem adding meal with ID $mealId: ${e.message}")
     }
 }
