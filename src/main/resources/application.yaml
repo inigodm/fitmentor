@@ -31,3 +31,11 @@ jwt:
     header: Authorization
     prefix: Bearer
     token-type: JWT
+logging:
+  level:
+    root: INFO
+    com.fitmentor: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

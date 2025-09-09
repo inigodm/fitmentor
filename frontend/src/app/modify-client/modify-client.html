@@ -1,0 +1,41 @@
+<div class="form-section">
+  <form (ngSubmit)="modifyClient()" autocomplete="off">
+    <h2 class="form-title">Cliente</h2>
+    <div class="form-group">
+      <label for="goals">Objetivos</label>
+      <input id="goals" type="text" [(ngModel)]="goals" name="goals" required placeholder="Objetivos entreno">
+    </div>
+    <div class="form-group">
+      <label for="age">Edad</label>
+      <input id="age" type="text" [(ngModel)]="age" name="age" required placeholder="18">
+    </div>
+    <div class="form-group">
+      <label for="injuries">Lesiones</label>
+      <input id="injuries" type="text" [(ngModel)]="injuries" name="injuries" required placeholder="Lesiones o enfermedades previas">
+    </div>
+    <div class="form-group">
+      <label for="weight">Peso</label>
+      <input id="weight" type="number" [(ngModel)]="weight" name="weight" required placeholder="87">
+    </div>
+    <div class="form-group checkbox-group">
+      <input id="equipmentAccess" type="checkbox" [(ngModel)]="equipmentAccess" name="equipmentAccess">
+      <label for="equipmentAccess">Acceso a equipamiento</label>
+    </div>
+    <div class="form-group">
+      <label for="preferedTrainingStyle">Estilo de entrenamiento preferido</label>
+      <input id="preferedTrainingStyle" type="text" [(ngModel)]="preferedTrainingStyle" name="preferedTrainingStyle" required placeholder="Funcional, fuerza, HIIT...">
+    </div>
+    <div class="form-group">
+      <label for="phonenumber">Teléfono</label>
+      <input id="phonenumber" type="text" [(ngModel)]="phonenumber" name="phonenumber" required placeholder="Ej: 600123456">
+    </div>
+    <div class="form-group">
+      <label for="coach">Coach asignado</label>
+      <input id="coach" type="text" [(ngModel)]="coach" name="coach" required placeholder="Coach asignado">
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-main">Guardar cambios</button>
+    </div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+</div>

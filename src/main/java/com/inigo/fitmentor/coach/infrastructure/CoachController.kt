@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.io.Serializable
 import java.util.*
 
@@ -53,11 +55,25 @@ class CoachController(
         }
     }
 
-    @PostMapping()
-    fun modifyCoach(@Valid @RequestBody coach: CoachModificationRequest): ResponseEntity<*> {
-        LOG.debug("REST request to update Coach : {}", coach.id)
-
-        val updatedCoach = createCoach.execute(toDomain(coach))
+    @PostMapping(consumes = ["multipart/form-data"])
+    fun modifyCoach(
+        @RequestPart("id") id: String,
+        @RequestPart("phonenumber", required = false) phonenumber: String?,
+        @RequestPart("presentation", required = false) presentation: String?,
+        @RequestPart("user") user: String,
+        @RequestPart("photo") photo: String
+    ): ResponseEntity<*> {
+        createCoach.execute(
+            toDomain(
+                CoachModificationRequest(
+                    id = UUID.fromString(id),
+                    phonenumber = phonenumber,
+                    presentation = presentation,
+                    photo = photo,
+                    user = UUID.fromString(user)
+                )
+            )
+        )
         return ResponseEntity.ok("")
     }
 

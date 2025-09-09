@@ -19,5 +19,6 @@ abstract class AggregateRoot(val uuid : UUID = UUID.randomUUID(), val aggregateN
 
     fun publishEvents() {
         cache.forEach { event -> domainEmitter.emit(event) }
+        cache.clear()
     }
 }

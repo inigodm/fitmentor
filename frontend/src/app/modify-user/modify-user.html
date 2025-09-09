@@ -1,32 +1,35 @@
-<form (ngSubmit)="createUser()">
-  <div class="form-group">
-    <label>Usuario:</label>
-    <input type="text" [(ngModel)]="username" name="username" required>
-  </div>
-  <div class="form-group">
-    <label>Contraseña:</label>
-    <input type="password" [(ngModel)]="password" name="password" required>
-  </div>
-  <div class="form-group">
-    <label>Confirmar contraseña:</label>
-    <input type="password" [(ngModel)]="passwordCheck" name="passwordCheck" required>
-  </div>
-  <div class="form-group">
-    <label>email:</label>
-    <input type="text" [(ngModel)]="email" name="email" required>
-  </div>
-  <div class="form-group">
-    <input type="hidden" [(ngModel)]="type" name="type" required>
-  </div>
-  <div class="form-group">
-    <input type="hidden" [(ngModel)]="role" name="role" value="{{ role }}" required>
-  </div>
-  <div class="form-group">
-    <input type="hidden" [(ngModel)]="id" name="id" required>
-  </div>
-  <div class="form-group">
-    <button type="submit">Crear</button>
-  </div>
-  <div *ngIf="error" class="error">{{ error }}</div>
-</form>
+<div class="form-section">
+  <form (ngSubmit)="createUser()" autocomplete="off">
+    <h2 class="form-title">Crear Usuario</h2>
+    <div class="form-group">
+      <label for="username">Usuario</label>
+      <input id="username" type="text" [(ngModel)]="username" name="username" required placeholder="Nombre de usuario">
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" [(ngModel)]="password" name="password" required placeholder="Contraseña">
+    </div>
+    <div class="form-group">
+      <label for="passwordCheck">Confirmar contraseña</label>
+      <input id="passwordCheck" type="password" [(ngModel)]="passwordCheck" name="passwordCheck" required placeholder="Repite la contraseña">
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" required placeholder="ejemplo@email.com">
+    </div>
+    <div class="form-group">
+      <input type="hidden" [(ngModel)]="type" name="type" required>
+    </div>
+    <div class="form-group">
+      <input type="hidden" [(ngModel)]="role" name="role" value="{{ role }}" required>
+    </div>
+    <div class="form-group">
+      <input type="hidden" [(ngModel)]="id" name="id" required>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-main">Crear</button>
+    </div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+</div>
 

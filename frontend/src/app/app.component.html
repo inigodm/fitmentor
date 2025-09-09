@@ -1,10 +1,19 @@
-<nav>
-  <a routerLink="/start">Home </a>
-  <a routerLink="/login"  *ngIf="!isLoggedIn()">Login </a>
-  <a [routerLink]="['/user/create/', 'client']">Create client</a>
-  <a [routerLink]="['/user/create/', 'coach']">Create coach</a>
-  <a routerLink="/logout" *ngIf="isLoggedIn()" (click)="logout()">Logout </a>
-</nav>
-<hr>
-<h1>{{ title }}</h1>
-<router-outlet/>
+<header>
+  <nav class="main-nav">
+    <div class="main-nav-links">
+      <a routerLink="/start" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+      <a routerLink="/login" *ngIf="!isLoggedIn()" routerLinkActive="active">Login</a>
+      <a [routerLink]="['/create/user/', 'client']" *ngIf="!isLoggedIn()" routerLinkActive="active">Crear cliente</a>
+      <a [routerLink]="['/create/user/', 'coach']" *ngIf="!isLoggedIn()" routerLinkActive="active">Crear coach</a>
+    </div>
+    <span class="user-info" *ngIf="isLoggedIn()" (click)="toggleUserMenu()">
+      {{ getUserInfo() }}
+      <div class="user-menu" *ngIf="showUserMenu">
+        <a (click)="logout()">Logout</a>
+      </div>
+    </span>
+  </nav>
+</header>
+<main class="main-container">
+  <router-outlet></router-outlet>
+</main>

@@ -31,8 +31,10 @@ export class CreateUser implements OnInit {
         { id: this.id, username: this.username, password: this.password, email: this.email, role: this.role },
         { responseType: 'text'}).subscribe({
         next: () => {
-          console.log('Usuario creado exitosamente');
-          this.router.navigate(['/ruta-destino']);
+          var url = '/create/' + this.type;
+          this.router.navigate([url], {
+            state: { user: this.id, username: this.username }
+          });
           this.error = '';
         },
         error: (err) => {

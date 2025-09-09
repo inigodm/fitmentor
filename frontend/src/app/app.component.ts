@@ -21,4 +21,17 @@ export class AppComponent {
       localStorage.removeItem('auth_token');
       this.router.navigate(['/login'])
     }
+    getUserInfo(): string {
+      // Intenta obtener el nombre o email del usuario desde localStorage
+      // Puedes adaptar la clave según cómo guardes el usuario al hacer login
+      return localStorage.getItem('user_email') || localStorage.getItem('username') || 'Usuario';
+    }
+
+  showUserMenu = false;
+
+  toggleUserMenu() {
+    this.showUserMenu = !this.showUserMenu;
+  }
+
+  // Si quieres cerrar el menú al hacer click fuera, puedes añadir lógica extra aquí
 }

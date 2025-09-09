@@ -1,7 +1,7 @@
-.login-form {
+form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Espaciado entre filas */
+  gap: 1.2em;
 }
 
 .form-title {
@@ -18,8 +18,11 @@
   margin-bottom: 1.2em;
 }
 
-button {
-  align-self: flex-start; /* Alinea el botón al inicio */
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.7em;
+  margin-bottom: 1.2em;
 }
 
 .form-actions {
@@ -53,6 +56,12 @@ input:focus {
   box-shadow: 0 0 0 2px var(--color-accent-light);
 }
 
+input[type="checkbox"] {
+  accent-color: var(--color-accent);
+  width: 1.2em;
+  height: 1.2em;
+}
+
 .btn-main {
   background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
   color: #fff;
@@ -80,4 +89,15 @@ input:focus {
   text-align: center;
   font-weight: 600;
   box-shadow: 0 1px 4px 0 rgba(255, 152, 0, 0.10);
+}
+
+.file-preview-group {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.photo-preview {
+  max-height: 2.5em; /* igual que el botón */
+  border-radius: 4px;
+  object-fit: cover;
 }

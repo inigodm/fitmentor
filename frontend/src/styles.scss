@@ -1,1 +1,120 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Paleta de colores parametrizable
+$color-primary: #ff9800; // Naranja
+$color-primary-dark: #f57c00;
+$color-accent: #43a047; // Verde
+$color-accent-light: #66bb6a;
+$color-bg: #f5f5f5;
+$color-surface: #fff;
+$color-text: #222;
+$color-muted: #888;
+$color-border: #e0e0e0;
+
+:root {
+  --color-primary: #{$color-primary};
+  --color-primary-dark: #{$color-primary-dark};
+  --color-accent: #{$color-accent};
+  --color-accent-light: #{$color-accent-light};
+  --color-bg: #{$color-bg};
+  --color-surface: #{$color-surface};
+  --color-text: #{$color-text};
+  --color-muted: #{$color-muted};
+  --color-border: #{$color-border};
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-top: 0;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+button, .btn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+button:hover, .btn:hover {
+  background: var(--color-primary-dark);
+}
+
+input, select, textarea {
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 0.6em 1em;
+  font-size: 1rem;
+  margin-bottom: 1em;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(67,160,71,0.07), 0 1.5px 6px rgba(255,152,0,0.08);
+  padding: 2em;
+  margin: 2em auto;
+  max-width: 500px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-light);
+  border-radius: 4px;
+}
+
+.form-section {
+  @extend .card !optional;
+  max-width: 80%;
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: 1.2em;
+  box-shadow: 0 4px 24px 0 rgba(67, 160, 71, 0.08), 0 1.5px 6px 0 rgba(255, 152, 0, 0.10);
+  padding: 2.5em 2em 2em 2em;
+  margin: 2.5em auto;
+}
+
+
+@media (max-width: 900px) {
+  .form-section {
+    max-width: 90%;
+  }
+
+  .main-nav {
+    max-width: 90%;
+  }
+}
+
+

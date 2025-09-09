@@ -43,6 +43,8 @@ public class SecurityConfig {
             auth
                 .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/user").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/user/clients").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/user/coaches").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/h2-console").permitAll()
                 .requestMatchers( "/v3/api-docs/**",
