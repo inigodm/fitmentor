@@ -1,10 +1,9 @@
-package com.inigo.arch.user.infrastucture
+package com.inigo.arch.user.infrastucture.controllers
 
 import com.inigo.arch.user.application.CreateUser
 import com.inigo.arch.user.domain.Email
 import com.inigo.arch.user.domain.Password
 import com.inigo.arch.user.domain.Role
-import com.inigo.arch.user.domain.User
 import com.inigo.arch.user.domain.Username
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull

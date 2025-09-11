@@ -1,4 +1,4 @@
-package com.inigo.arch.user.infrastucture
+package com.inigo.arch.user.infrastucture.controllers
 
 import com.inigo.arch.user.application.Login
 import com.inigo.arch.user.domain.Password

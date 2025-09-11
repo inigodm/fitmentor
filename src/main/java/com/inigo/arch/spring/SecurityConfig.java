@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/user").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/user/clients").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/coaches").permitAll()
+                .requestMatchers("/webauthn/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/h2-console").permitAll()
                 .requestMatchers( "/v3/api-docs/**",
