@@ -14,8 +14,8 @@ class WebAuthnController(val fidoMakeChallenge: FidoMakeChallenge, val fidoRegis
     private val random = SecureRandom()
 
     @GetMapping("/register/challenge")
-    fun registerChallenge(@RequestParam username: String?): String {
-        return fidoMakeChallenge.execute(username!!)
+    fun registerChallenge(@RequestParam userId: String?): String {
+        return fidoMakeChallenge.execute(userId!!)
     }
 
     @PostMapping("/register")

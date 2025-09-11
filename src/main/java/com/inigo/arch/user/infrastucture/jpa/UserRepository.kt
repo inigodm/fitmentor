@@ -92,6 +92,6 @@ class UserRepository(val repo : UserJpaRepository,
     }
 
     override fun updateChallenge(userId: String, challengeStr: String) {
-        repo.updateChallenge(userId, challengeStr);
+        repo.updateChallenge(UUID.fromString(userId), challengeStr);
     }
 }

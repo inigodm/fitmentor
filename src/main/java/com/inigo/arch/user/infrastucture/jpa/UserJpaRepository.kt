@@ -27,6 +27,6 @@ interface UserJpaRepository : JpaRepository<UserJpa, UUID> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE UserJpa u SET u.currentChallenge = :challenge, u.challengeExpiry = :expiry WHERE u.id = :userId")
-    fun updateChallenge(userId: String, challenge: String, expiry : Instant = Instant.now().plusSeconds(120))
+    @Query("UPDATE UserJpa u SET u.currentChallenge = :challenge, u.challengeExpiry = :expiry WHERE u.id = :id")
+    fun updateChallenge(id: UUID, challenge: String, expiry : Instant = Instant.now().plusSeconds(120))
 }
