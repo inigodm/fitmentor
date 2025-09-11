@@ -18,7 +18,12 @@ spring:
   main:
       allow-bean-definition-overriding: true
 server:
-    port: 8080
+    port: 8443
+    ssl:
+      enabled: true
+      key-store: classpath:fitmentor.com.p12
+      key-store-password: fitmentor_change_it
+      key-store-type: PKCS12
 jwt:
     secret: |
         random string dfsdfenrñjweugb
@@ -31,11 +36,3 @@ jwt:
     header: Authorization
     prefix: Bearer
     token-type: JWT
-logging:
-  level:
-    root: INFO
-    com.fitmentor: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
