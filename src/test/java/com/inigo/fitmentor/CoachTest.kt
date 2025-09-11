@@ -142,7 +142,6 @@ class CoachTest
         assertThat(planMap["coach"]).isEqualTo(coachId)
         assertThat(planMap["description"]).isEqualTo("Plan de entrenamiento personalizado")
 
-
         val plan = PlanUtils.getPlan(mockMvc, tokenCo, clientId, planId1)
 
         assertNotNull(plan)

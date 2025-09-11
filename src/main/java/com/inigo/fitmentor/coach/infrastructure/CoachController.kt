@@ -55,22 +55,16 @@ class CoachController(
         }
     }
 
-    @PostMapping(consumes = ["multipart/form-data"])
-    fun modifyCoach(
-        @RequestPart("id") id: String,
-        @RequestPart("phonenumber", required = false) phonenumber: String?,
-        @RequestPart("presentation", required = false) presentation: String?,
-        @RequestPart("user") user: String,
-        @RequestPart("photo") photo: String
-    ): ResponseEntity<*> {
+    @PostMapping
+    fun modifyCoach(@RequestBody request: CoachCreationRequestBody): ResponseEntity<*> {
         createCoach.execute(
             toDomain(
                 CoachModificationRequest(
-                    id = UUID.fromString(id),
-                    phonenumber = phonenumber,
-                    presentation = presentation,
-                    photo = photo,
-                    user = UUID.fromString(user)
+                    id = UUID.fromString(request.id),
+                    phonenumber = request.phonenumber,
+                    presentation = request.presentation,
+                    photo = request.photo,
+                    user = UUID.fromString(request.user)
                 )
             )
         )
@@ -107,5 +101,13 @@ class CoachController(
         var presentation: String? = null,
         var photo: String? = null,
         var user: UUID
+    )
+
+    data class CoachCreationRequestBody(
+        @field:NotNull(message = "id must not be null") var id: String,
+        var phonenumber: String?,
+        var presentation: String?,
+        @field:NotNull(message = "userId  must not be null") var user: String,
+        var photo: String?
     )
 }
