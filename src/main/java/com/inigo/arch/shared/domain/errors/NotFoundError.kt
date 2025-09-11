@@ -18,5 +18,8 @@ class NotFoundError: RuntimeException {
 
         fun becauseNoMealFound(mealId: String, e: Exception): NotFoundError =
             NotFoundError("Problem adding meal with ID $mealId: ${e.message}")
+
+        fun becauseUserIdNotFound(userId: String): NotFoundError =
+            NotFoundError("User with ID $userId does not exist")
     }
 }

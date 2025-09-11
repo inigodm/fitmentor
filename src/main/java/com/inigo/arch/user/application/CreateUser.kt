@@ -25,7 +25,7 @@ class CreateUser(val store: UserStore) {
             password = password,
             role = role
         )
-        if (store.existsUserId(user)) {
+        if (store.existsUserId(user.id)) {
             LOG.warn("User with id ${id} already exists")
             return
         }

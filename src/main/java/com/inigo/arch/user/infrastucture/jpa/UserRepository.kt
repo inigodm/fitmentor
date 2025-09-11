@@ -74,7 +74,12 @@ class UserRepository(val repo : UserJpaRepository,
         )
     }
 
-    override fun existsUserId(user: User) = repo.existsById(user.id)
+    override fun existsUserId(id: UUID) = repo.existsById(id)
+    override fun findById(userId: String): User {
+        return repo.findById(UUID.fromString(userId))
+            .map { it.toDomain() }
+            .orElseThrow { NotFoundError.becauseUserIdNotFound(userId) }
+    }
 
     override fun existsUsername(user: User) = repo.findByUsername(user.username.value).isPresent
 
@@ -84,5 +89,9 @@ class UserRepository(val repo : UserJpaRepository,
         if (updatedRows == 0) {
             throw IllegalArgumentException("User with ID $userId not found or type update failed.")
         }
+    }
+
+    override fun updateChallenge(userId: String, challengeStr: String) {
+        repo.updateChallenge(userId, challengeStr);
     }
 }
