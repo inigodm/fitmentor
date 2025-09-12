@@ -1,6 +1,11 @@
 {
   "/api": {
-    "target": "http://localhost:8080",
+    "target": "https://fitmentor.com:8443",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/webauthn": {
+    "target": "https://fitmentor.com:8443",
     "secure": false,
     "changeOrigin": true
   }

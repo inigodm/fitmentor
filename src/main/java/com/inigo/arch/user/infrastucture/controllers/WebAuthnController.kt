@@ -2,6 +2,7 @@ package com.inigo.arch.user.infrastucture.controllers
 
 import com.inigo.arch.user.application.FidoMakeChallenge
 import com.inigo.arch.user.application.FidoRegister
+import com.inigo.arch.user.application.PublicKeyCredentialCreationOptions
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.SecureRandom
@@ -14,7 +15,7 @@ class WebAuthnController(val fidoMakeChallenge: FidoMakeChallenge, val fidoRegis
     private val random = SecureRandom()
 
     @GetMapping("/register/challenge")
-    fun registerChallenge(@RequestParam userId: String?): String {
+    fun registerChallenge(@RequestParam userId: String?): PublicKeyCredentialCreationOptions {
         return fidoMakeChallenge.execute(userId!!)
     }
 

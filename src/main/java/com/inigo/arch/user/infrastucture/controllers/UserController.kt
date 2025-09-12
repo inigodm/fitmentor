@@ -19,7 +19,7 @@ import java.util.UUID
 @RequestMapping("/api/user")
 @Validated
 class UserController(val createUser: CreateUser) {
-    @PutMapping()
+    @PutMapping
     fun save(@Valid @RequestBody request: UserCreateRequest): ResponseEntity<String> {
         createUser.execute(
             request.id,
