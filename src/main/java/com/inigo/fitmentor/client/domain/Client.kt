@@ -14,6 +14,8 @@ class Client(
   val weight: Int? = null,
   val equipmentAccess: Int? = null,
   val phonenumber: String? = null,
+  val email: String,
+  val username: String,
   val user: UserId
 ) : AggregateRoot(aggregateName = "snapshots.client", uuid = id.value) {
   // TODO: consider removing

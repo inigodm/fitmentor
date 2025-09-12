@@ -39,6 +39,12 @@ class ClientJpa : Serializable {
     @Column(name = "user_id")
     lateinit var user: UUID
 
+    @Column(name = "username")
+    lateinit var username: String
+
+    @Column(name = "email")
+    lateinit var email: String
+
   fun toDomain(): Client {
     return Client(
       id = ClientId(id),
@@ -48,7 +54,9 @@ class ClientJpa : Serializable {
       weight = weight,
       equipmentAccess = equipmentAccess,
       phonenumber = phonenumber,
-      user = UserId(user) // Assuming plans are not stored in this entity
+      user = UserId(user),
+      email = email,
+      username = username
     )
   }
   companion object {
@@ -62,6 +70,8 @@ class ClientJpa : Serializable {
         equipmentAccess = client.equipmentAccess
         phonenumber = client.phonenumber
         user = client.user.value
+        username = client.username
+        email = client.email
     }
   }
 }

@@ -6,7 +6,9 @@ CREATE TABLE clients (
     weight INT NOT NULL,
     equipment_access INT NOT NULL,
     phone_number VARCHAR NOT NULL,
-    user_id UUID NOT NULL
+    user_id UUID NOT NULL,
+    username VARCHAR NOT NULL,
+    email VARCHAR NOT NULL
 );
 
 CREATE INDEX idx_clients_userId ON clients (user_id);

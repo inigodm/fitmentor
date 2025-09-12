@@ -1,22 +1,28 @@
 package com.inigo.fitmentor.client.infrastructure
 
+import com.inigo.arch.spring.BearerService
+import com.inigo.arch.user.domain.Email
 import com.inigo.fitmentor.client.application.CreateClient
 import com.inigo.fitmentor.client.application.FindClient
 import com.inigo.fitmentor.client.application.UpdateClient
 import com.inigo.fitmentor.client.domain.Client
 import com.inigo.fitmentor.shared.domain.ClientId
 import com.inigo.fitmentor.shared.domain.UserId
+import io.jsonwebtoken.Jwts
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.io.Serializable
@@ -31,7 +37,8 @@ import java.util.*
 class ClientController(
     val findClient: FindClient,
     val updateClient: UpdateClient,
-    val createClient: CreateClient){
+    val createClient: CreateClient,
+    val bearerService: BearerService){
 
     /**
      * `GET  /clients/:id` : get the "id" client.
@@ -39,10 +46,11 @@ class ClientController(
      * @param id the id of the clientDTO to retrieve.
      * @return the [ResponseEntity] with status `200 (OK)` and with body the clientDTO, or with status `404 (Not Found)`.
      */
-    @GetMapping("/{id}")
-    fun getClient(@NotNull @PathVariable("id") id: UUID): ResponseEntity<ClientResponse> {
-        LOG.debug("REST request to get Client : {}", id)
-        val client: Client? = findClient.execute(ClientId(id))
+    @GetMapping
+    fun getClient(@NotNull  @RequestHeader("Authorization") authHeader: String): ResponseEntity<ClientResponse> {
+        val token = authHeader.removePrefix("Bearer ").trim()
+        val data = bearerService.parseToken(token)
+        val client: Client? = findClient.execute(UserId(data.id))
         return if (client == null) {
             ResponseEntity.notFound().build()
         } else {
@@ -85,7 +93,9 @@ class ClientController(
                 weight = weight,
                 equipmentAccess = equipmentAccess,
                 phonenumber = phonenumber,
-                user = user
+                user = user,
+                email = email,
+                username = username
             )
         }
     }
@@ -103,7 +113,9 @@ class ClientController(
         var equipmentAccess: Int? = null,
         var phonenumber: String? = null,
         @field:NotNull(message = "user must not be null") var user: UserId,
-        var plans: List<UUID>? = null
+        var plans: List<UUID>? = null,
+        var email: String,
+        var username: String
     ) : Serializable
 
     data class ClientResponse(

@@ -1,6 +1,8 @@
 package com.inigo.fitmentor.client.domain
 
 import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.UserId
+import jakarta.transaction.Transactional
 import java.util.UUID
 
 /**
@@ -28,7 +30,7 @@ interface ClientService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    fun findByClientId(id: ClientId): Client?
+    fun findByUserId(id: UserId): Client?
 
     /**
      * Delete the "id" client.
