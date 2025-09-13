@@ -45,6 +45,15 @@ export class CreateUser implements OnInit {
     }
   }
 
+  async registerWithBiometrics() {
+    this.http.get('/webauthn/register/challenge?userId=' + this.id)
+      .subscribe((options: any) => {
+        options.challenge = this.base64urlToUint8Array(options.challenge);
+          options.user.id = this.base64urlToUint8Array(options.user.id);
+          console.log("Challenge: " + options.challenge);
+          console.log("UserId: " + options.user.id);
+      });
+    }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.type = params.get('type') ?? '';
@@ -52,4 +61,13 @@ export class CreateUser implements OnInit {
       console.log('Type:', this.type);
     });
   }
+
+  base64urlToUint8Array(base64url: string): Uint8Array {
+    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = '='.repeat((4 - (base64.length % 4)) % 4);
+    return Uint8Array.from(atob(base64 + pad), c => c.charCodeAt(0));
+  }
+
+
+
 }

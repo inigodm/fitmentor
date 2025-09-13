@@ -20,7 +20,7 @@ export class LoginComponent {
 
   login() {
     this.auth.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.router.navigate(['/client']),
       error: () => this.error = 'Credenciales inválidas'
     });
   }

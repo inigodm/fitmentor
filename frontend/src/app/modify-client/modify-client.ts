@@ -48,7 +48,7 @@ export class ModifyClient {
         { responseType: 'text'}).subscribe({
         next: () => {
           console.log('Usuario creado exitosamente');
-          this.router.navigate(['/ruta-destino']);
+          this.router.navigate(['/client']);
           this.error = '';
         },
         error: (err) => {
