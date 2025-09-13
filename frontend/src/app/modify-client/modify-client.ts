@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { v7 as uuidv7 } from 'uuid';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './modify-client.html',
   styleUrl: './modify-client.scss'
 })
-export class ModifyClient {
+export class ModifyClient  implements OnInit{
     id = uuidv7();
     goals = "";
     age = 0;
@@ -20,6 +20,8 @@ export class ModifyClient {
     equipmentAccess = false;
     preferedTrainingStyle = "";
     phonenumber = "";
+    email = "";
+    username = "";
     user = "";
     coach = "";
     error = '';
@@ -38,12 +40,14 @@ export class ModifyClient {
         { id: this.id,
           goals: this.goals,
           age: this.age,
+          email: this.email,
           injuries: this.injuries,
           weight: Math.round(this.weight * 1000),
           equipmentAccess: this.equipmentAccess ? 1 : 0,
           preferedTrainingStyle: this.preferedTrainingStyle,
           phonenumber: this.phonenumber,
           user: this.user,
+          username: this.username,
           coach: this.coach },
         { responseType: 'text'}).subscribe({
         next: () => {
@@ -56,5 +60,15 @@ export class ModifyClient {
           this.error = 'Error al crear el usuario';
         }
       });
+    }
+
+    ngOnInit(): void {
+      const nav = this.router.getCurrentNavigation();
+      const state = nav?.extras.state as { email: string, username: string };
+
+      if (state) {
+        this.email = state.email;
+        this.username = state.username;
+      }
     }
   }

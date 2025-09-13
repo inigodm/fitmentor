@@ -21,7 +21,7 @@ class FidoMakeChallenge(val userStore: UserStore) {
             user = UserEntity(
                 id = Base64.getUrlEncoder().withoutPadding().encodeToString(UUID.fromString(userId).toString().toByteArray()),
                 name = user.username.value,
-                displayName = user.email.value
+                displayName = user.username.value
             ),
             pubKeyCredParams = listOf(
                 PubKeyCredParam("public-key", -7),   // ES256
