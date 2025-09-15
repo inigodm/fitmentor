@@ -1,6 +1,7 @@
 package com.inigo.arch.user.application
 
 import com.inigo.arch.user.domain.UserStore
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
 import java.util.Base64
@@ -8,6 +9,7 @@ import java.util.UUID
 
 @Component
 class FidoMakeChallenge(val userStore: UserStore) {
+    @Value("\${fitmentor.domain}") lateinit var DOMAIN: String
 
     fun execute(userId: String): PublicKeyCredentialCreationOptions {
         val user = userStore.findById(userId)
@@ -17,7 +19,7 @@ class FidoMakeChallenge(val userStore: UserStore) {
         userStore.updateChallenge(userId, challengeStr)
         return PublicKeyCredentialCreationOptions(
             challenge = challengeStr,
-            rp = RpEntity("fitmentor.com", "fitmentor.com"),
+            rp = RpEntity(DOMAIN, DOMAIN),
             user = UserEntity(
                 id = Base64.getUrlEncoder().withoutPadding().encodeToString(UUID.fromString(userId).toString().toByteArray()),
                 name = user.username.value,

@@ -1,3 +1,6 @@
+fitmentor:
+  domain: fitmentor.com
+
 spring.application.name: fitmentor
 spring:
   cache:

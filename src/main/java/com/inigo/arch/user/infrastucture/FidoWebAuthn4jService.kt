@@ -8,7 +8,6 @@ import com.webauthn4j.converter.CollectedClientDataConverter
 import com.webauthn4j.converter.util.ObjectConverter
 import com.webauthn4j.data.PublicKeyCredentialParameters
 import com.webauthn4j.data.PublicKeyCredentialType
-import com.webauthn4j.data.RegistrationData
 import com.webauthn4j.data.RegistrationParameters
 import com.webauthn4j.data.RegistrationRequest
 import com.webauthn4j.data.attestation.authenticator.AttestedCredentialData
@@ -16,12 +15,14 @@ import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier
 import com.webauthn4j.data.client.Origin
 import com.webauthn4j.data.client.challenge.DefaultChallenge
 import com.webauthn4j.server.ServerProperty
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.security.MessageDigest
 import java.util.Base64
 
 @Component
 class FidoWebAuthn4jService(val objectConverter: ObjectConverter, val attestedCredentialDataConverter: AttestedCredentialDataConverter): FidoService {
+    @Value("\${fitmentor.domain}") lateinit var DOMAIN: String
 
     /**
      * returns:
@@ -37,8 +38,8 @@ class FidoWebAuthn4jService(val objectConverter: ObjectConverter, val attestedCr
         val registrationRequest = RegistrationRequest(attestationObject, clientDataJSONBytes)
         val registrationParameters = RegistrationParameters(
             ServerProperty(
-                Origin("https://fitmentor.com"),
-                "fitmentor.com",
+                Origin("https://" + DOMAIN),
+                DOMAIN,
                 DefaultChallenge(challengeFromClient)
             ),
             listOf(
