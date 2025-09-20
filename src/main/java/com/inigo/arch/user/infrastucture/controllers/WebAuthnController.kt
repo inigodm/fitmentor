@@ -28,6 +28,7 @@ class WebAuthnController(val fidoMakeChallenge: FidoMakeChallenge, val fidoRegis
             clientDataJSONBytes,
             attestationObject
         )
+        println("REGISTRADO!!!!!")
         return ResponseEntity.ok("Registered")
     }
 }

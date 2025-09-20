@@ -1,11 +1,12 @@
 {
   "/api": {
-    "target": "https://fitmentor.com:8443",
+    "target": "https://fitmentor.com/:8443",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "potato": true
   },
   "/webauthn": {
-    "target": "https://fitmentor.com:8443",
+    "target": "https://fitmentor.com/:8443",
     "secure": false,
     "changeOrigin": true
   }

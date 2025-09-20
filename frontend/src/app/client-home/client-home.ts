@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import environment from '../../environments/environment.json';
 
 @Component({
   selector: 'app-client-home',
@@ -26,10 +27,11 @@ export class ClientHome implements OnInit {
     async registerWithBiometrics() {
     this.http.get('/webauthn/register/challenge?userId=' + this.userId)
       .subscribe((options: any) => {
+          alert("VAMOS")
           this.startRegistration(options.challenge)
       });
     }
-  
+
   base64urlToUint8Array(base64url: string): Uint8Array {
     const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
     const pad = '='.repeat((4 - (base64.length % 4)) % 4);
@@ -46,11 +48,12 @@ export class ClientHome implements OnInit {
 }
 
   async startRegistration(challenge: string) {
+    alert(environment.domain);
     const publicKeyCredentialCreationOptions: PublicKeyCredentialCreationOptions = {
       challenge: this.base64urlToUint8Array(challenge),  // aquí usas tu helper
       rp: {
         name: "FitMentor",
-        id: "fitmentor.com"
+        id: environment.domain
       },
       user: {
         id: this.base64urlToUint8Array(this.userId), // el userId también tiene que ser un buffer
@@ -89,8 +92,11 @@ sendToBackend(credential: PublicKeyCredential) {
   };
 
   this.http.post('/webauthn/register', body).subscribe({
-    next: () => console.log("✅ Registro FIDO2 completado"),
-    error: err => console.error("❌ Error en el registro", err)
+    next: () => alert("✅ Registro FIDO2 completado"),
+    error: err => {
+      alert("❌ Error en el registro");
+      alert(err);
+      }
   });
 }
 

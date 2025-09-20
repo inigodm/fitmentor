@@ -1,6 +1,7 @@
 package com.inigo.arch.spring;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,8 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    @Value("${fitmentor.domain}") String DOMAIN;
+
     private final JwtAuthenticationFilter authenticationFilter;
 
     public SecurityConfig(JwtAuthenticationFilter authenticationFilter) {
@@ -71,8 +74,8 @@ public class SecurityConfig {
                 new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+        config.addAllowedOrigin("https://" + DOMAIN);
         config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedOrigin("https://fitmentor.com:4200");
         config.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","OPTIONS","PATCH"));
         config.setExposedHeaders(List.of("Authorization"));
