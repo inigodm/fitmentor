@@ -20,7 +20,13 @@ spring:
       enabled: true
   main:
       allow-bean-definition-overriding: true
-
+server:
+    port: 8443
+    ssl:
+      enabled: true
+      key-store: classpath:fitmentor.com.p12
+      key-store-password: fitmentor_change_it
+      key-store-type: PKCS12
 jwt:
     secret: |
         random string dfsdfenrñjweugb

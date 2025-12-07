@@ -1,14 +1,12 @@
 package com.inigo.fitmentor.client.domain
 
-import com.inigo.fitmentor.shared.domain.ClientId
 import com.inigo.fitmentor.shared.domain.UserId
-import jakarta.transaction.Transactional
 import java.util.UUID
 
 /**
  * Service Interface for managing [com.inigo.fitmentor.client.infrastructure.ClientJpa].
  */
-interface ClientService {
+interface ClientStore {
     /**
      * Save a client.
      *
