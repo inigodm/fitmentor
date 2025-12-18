@@ -13,32 +13,35 @@ import java.net.UnknownHostException
 @EnableJpaRepositories(basePackages = ["com.inigo.arch", "com.inigo.fitmentor"])
 @EntityScan(basePackages = ["com.inigo.arch", "com.inigo.fitmentor"])
 @ComponentScan(basePackages = ["com.inigo.arch", "com.inigo.fitmentor"])
-object ArchApplication {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val environment = SpringApplication.run(ArchApplication::class.java, *args).getEnvironment()
-        logApplicationStartup(environment)
-    }
-
-    private fun logApplicationStartup(env: ConfigurableEnvironment) {
-        val protocol = env.getProperty("server.ssl.key-store") ?: "http"
-        val applicationName = env.getProperty("spring.application.name")
-        val serverPort = env.getProperty("server.port")
-        val contextPath = env.getProperty("server.servlet.context-path") ?: "/"
-        var hostAddress: String? = "localhost"
-        try {
-            hostAddress = InetAddress.getLocalHost().hostAddress
-        } catch (e: UnknownHostException) {
-            println("The host name could not be determined, using `localhost` as fallback")
+class ArchApplication {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val environment = SpringApplication.run(ArchApplication::class.java, *args).getEnvironment()
+            logApplicationStartup(environment)
         }
-        println(
-            """
-                ----------------------------------------------------------
-                ${'\t'}Application '$applicationName' is running! Access URLs:
-                ${'\t'}Local: ${'\t'}${'\t'}$protocol://localhost:$serverPort$contextPath
-                ${'\t'}External: ${'\t'}$protocol://$hostAddress:$serverPort$contextPath
-                ${'\t'}Profile(s): ${'\t'}${env.activeProfiles.joinToString(", ")}
-                ----------------------------------------------------------
-            """.trimIndent())
+
+        private fun logApplicationStartup(env: ConfigurableEnvironment) {
+            val protocol = env.getProperty("server.ssl.key-store") ?: "http"
+            val applicationName = env.getProperty("spring.application.name")
+            val serverPort = env.getProperty("server.port")
+            val contextPath = env.getProperty("server.servlet.context-path") ?: "/"
+            var hostAddress: String? = "localhost"
+            try {
+                hostAddress = InetAddress.getLocalHost().hostAddress
+            } catch (e: UnknownHostException) {
+                println("The host name could not be determined, using `localhost` as fallback")
+            }
+            println(
+                """
+                    ----------------------------------------------------------
+                    ${'\t'}Application '$applicationName' is running! Access URLs:
+                    ${'\t'}Local: ${'\t'}${'\t'}$protocol://localhost:$serverPort$contextPath
+                    ${'\t'}External: ${'\t'}$protocol://$hostAddress:$serverPort$contextPath
+                    ${'\t'}Profile(s): ${'\t'}${env.activeProfiles.joinToString(", ")}
+                    ----------------------------------------------------------
+                """.trimIndent()
+            )
+        }
     }
 }

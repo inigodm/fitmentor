@@ -10,6 +10,7 @@ import com.inigo.arch.user.infrastucture.UnauthorizedError
 import com.inigo.arch.shared.domain.errors.NotFoundError
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.Optional
 import java.util.UUID
 
 @Component
@@ -54,22 +55,22 @@ class UserRepository(val repo : UserJpaRepository,
         }
     }
 
-    override fun save(user: User) {
-        repo.save(
-            UserJpa(user.id,
+    override fun save(user: User): User {
+        return repo.save(
+            UserJpa(user.userId,
                 user.username.value,
                 user.email.value,
-                bCryptEncoder.encode(user.password.value),
+                bCryptEncoder.encode(user.password!!.value),
                 user.role.name)
-            )
-        }
+            ).toDomain()
+    }
 
     override fun delete(user: User) {
         repo.delete(
-            UserJpa(user.id,
+            UserJpa(user.userId,
                 user.username.value,
                 user.email.value,
-                user.password.value,
+                user.password!!.value,
                 user.role.name)
         )
     }
@@ -79,6 +80,11 @@ class UserRepository(val repo : UserJpaRepository,
         return repo.findById(UUID.fromString(userId))
             .map { it.toDomain() }
             .orElseThrow { NotFoundError.becauseUserIdNotFound(userId) }
+    }
+    override fun searchById(userId: UUID): User? {
+        return repo.findById(userId)
+            .map { it.toDomain() }
+            .orElse(null)
     }
 
     override fun existsUsername(user: User) = repo.findByUsername(user.username.value).isPresent

@@ -6,7 +6,7 @@ import com.inigo.fitmentor.shared.domain.CoachId
  * Service Interface for managing [com.inigo.fitmentor.client.infrastructure.ClientJpa].
  */
 interface CoachService {
-    fun save(coach: Coach)
+    fun save(coach: Coach): Coach
 
     fun findByCoachId(id: CoachId): Coach?
     fun existsUser(coach: Coach): Boolean

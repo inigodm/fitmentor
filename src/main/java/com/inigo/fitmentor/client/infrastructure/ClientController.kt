@@ -62,7 +62,7 @@ class ClientController(
                 weight = client.weight,
                 equipmentAccess = client.equipmentAccess,
                 phonenumber = client.phonenumber,
-                user = client.user.value
+                user = client.user!!.value
             ))
         }
     }

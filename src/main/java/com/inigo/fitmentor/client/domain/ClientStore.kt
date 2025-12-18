@@ -13,7 +13,7 @@ interface ClientStore {
      * @param client the entity to save.
      * @return the persisted entity.
      */
-    fun save(client: Client)
+    fun save(client: Client): Client
 
     /**
      * Get all the clients.

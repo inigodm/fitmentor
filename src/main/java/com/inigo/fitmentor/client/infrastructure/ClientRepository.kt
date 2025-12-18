@@ -23,9 +23,9 @@ open class ClientRepository(
     private val clientRepository: ClientJpaRepository,
     private val userJpaRepository: UserJpaRepository
     ) : ClientStore {
-    override fun save(client: Client) {
+    override fun save(client: Client): Client {
         LOG.debug("Request to save Client : {}", client)
-        clientRepository.save(fromDomain(client))
+        return clientRepository.save(fromDomain(client)).toDomain()
     }
 
     @Transactional(readOnly = true)
@@ -50,8 +50,8 @@ open class ClientRepository(
     }
 
     override fun existsUser(client: Client) : Boolean {
-        LOG.debug("Request to check existence of client : {}  as user : {}", client.id.value, client.user.value)
-        return userJpaRepository.findById(client.user.value).isPresent
+        LOG.debug("Request to check existence of client : {}  as user : {}", client.id.value, client.user!!.value)
+        return userJpaRepository.findById(client.user!!.value).isPresent
     }
 
     override fun existsClient(client: Client) : Boolean {

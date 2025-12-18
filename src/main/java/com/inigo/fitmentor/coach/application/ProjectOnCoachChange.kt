@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component
 class ProjectOnCoachUpdated(val repo: CoachRepository, val kafkaProducerService: KafkaProducerService) {
     @EventListener
     fun on(event: CoachUpdated) {
-        repo.findById(event.coachId)
+        /*repo.findById(event.coachId)
             .map { clientJpa ->  clientJpa.toDomain() }
             .map { kafkaProducerService.sendSnapshot(it) }
-            .orElseThrow { SnapshotNotSendError.becauseNoClientExistsForGivenId(event.id.toString()) }
+            .orElseThrow { SnapshotNotSendError.becauseNoClientExistsForGivenId(event.id.toString()) }*/
     }
 }

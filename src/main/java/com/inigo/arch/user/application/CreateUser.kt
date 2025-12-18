@@ -17,28 +17,19 @@ class CreateUser(val store: UserStore) {
         email: Email,
         password: Password,
         role: Role
-    ) {
+    ): User {
         val user = User(
-            id = id,
+            userId = id,
             username = username,
             email = email,
             password = password,
             role = role
         )
-        if (store.existsUserId(user.id)) {
-            LOG.warn("User with id ${id} already exists")
-            return
-        }
-        if (store.existsEmail(user)) {
-            throw IllegalArgumentException("User with email ${email} already exists")
-        }
-        if (store.existsUsername(user)) {
-            throw IllegalArgumentException("User with username ${username} already exists")
-        }
-        store.save(user)
-    }
+        store.searchById(user.userId)?.let { return it }
 
-    companion object {
-        private val LOG = org.slf4j.LoggerFactory.getLogger(CreateUser::class.java)
+        require(!store.existsEmail(user)) { "User with email ${email} already exists" }
+        require(!store.existsUsername(user)) { "User with username ${username} already exists" }
+
+        return store.save(user)
     }
 }

@@ -9,9 +9,5 @@ import org.springframework.stereotype.Component
 class AddTypeOnClientCreated(val addTypeToUser: AddTypeToUser) {
     @EventListener
     fun handle(clientCreated: ClientCreated) {
-        addTypeToUser.execute(
-            clientCreated.userId,
-            "client"
-        )
     }
 }

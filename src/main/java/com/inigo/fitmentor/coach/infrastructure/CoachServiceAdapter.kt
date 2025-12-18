@@ -22,9 +22,9 @@ open class CoachServiceAdapter(
     private val coachRepository: CoachRepository,
     private val userJpaRepository: UserJpaRepository
     ) : CoachService {
-    override fun save(coach: Coach) {
+    override fun save(coach: Coach): Coach {
         LOG.debug("Request to save Coach : {}", coach)
-        coachRepository.save(CoachJpa.fromDomain(coach))
+        return coachRepository.save(CoachJpa.fromDomain(coach)).toDomain()
     }
 
     fun findAll(): List<Coach> {
@@ -47,13 +47,13 @@ open class CoachServiceAdapter(
     }
 
     override fun existsUser(coach: Coach) : Boolean {
-        LOG.debug("Request to check existence of Coach : {}  as user : {}", coach.id.value, coach.user.value)
-        return userJpaRepository.findById(coach.user.value).isPresent
+        LOG.debug("Request to check existence of Coach : {}  as user : {}", coach.id.value, coach.user!!.value)
+        return userJpaRepository.findById(coach.user!!.value).isPresent
     }
 
     override fun existsCoach(coach: Coach): Boolean {
         LOG.debug("Request to check existence of Coach : {}", coach.id.value)
-        return coachRepository.findById(coach.user.value).isPresent
+        return coachRepository.findById(coach.user!!.value).isPresent
     }
 
     companion object {

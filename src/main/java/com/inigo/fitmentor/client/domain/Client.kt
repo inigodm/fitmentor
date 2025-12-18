@@ -1,10 +1,12 @@
 package com.inigo.fitmentor.client.domain
 
-import com.inigo.arch.shared.domain.AggregateRoot
+import com.inigo.arch.user.domain.Role.CLIENT
 import com.inigo.fitmentor.shared.domain.ClientId
+import com.inigo.fitmentor.shared.domain.FitmentorUser
 import com.inigo.fitmentor.shared.domain.UserId
 import com.inigo.fitmentor.shared.domain.events.ClientCreated
 import com.inigo.fitmentor.shared.domain.events.ClientUpdated
+import com.inigo.fitmentor.shared.infrastructure.UserService
 
 class Client(
     val id: ClientId,
@@ -13,22 +15,27 @@ class Client(
     val injuries: String? = null,
     val weight: Int? = null,
     val equipmentAccess: Int? = null,
-    val phonenumber: String? = null,
-    val email: String,
-    val username: String,
-    val user: UserId
-) : AggregateRoot(aggregateName = "snapshots.client", uuid = id.value) {
+    user: UserId,
+    phonenumber: String? = null,
+    email: String,
+    username: String,
+) : FitmentorUser(aggregateName = "snapshots.client",
+    phonenumber = phonenumber,
+    email = email,
+    username = username,
+    user = user,
+    role = CLIENT) {
     // TODO: consider removing
-    fun ensureUserExists(store: ClientStore): Client {
+    fun ensureUserExists(store: ClientStore, userService: UserService): Client {
         if (!store.existsUser(this)) {
-            throw IllegalArgumentException("User with id ${this.user} does not exist")
+            userService.createUser(this)
         }
         return this
     }
 
     fun save(store: ClientStore): Client {
-        store.save(this)
-        record(ClientUpdated(clientId = this.id.value, userId = this.user.value))
+        this.user = store.save(this).user
+        record(ClientUpdated(clientId = this.id.value, userId = this.user!!.value))
         return this
     }
 
@@ -37,8 +44,8 @@ class Client(
     }
 
     fun create(store: ClientStore): Client {
-        store.save(this)
-        record(ClientCreated(clientId = this.id.value, userId = this.user.value))
+        this.user = store.save(this).user
+        record(ClientCreated(clientId = this.id.value, userId = this.user!!.value))
         return this
     }
 

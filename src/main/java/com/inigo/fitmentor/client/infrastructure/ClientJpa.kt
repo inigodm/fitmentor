@@ -4,6 +4,7 @@ import com.inigo.fitmentor.client.domain.Client
 import com.inigo.fitmentor.shared.domain.ClientId
 import com.inigo.fitmentor.shared.domain.UserId
 import jakarta.persistence.*
+import org.hibernate.annotations.DynamicUpdate
 import java.io.Serializable
 import java.util.UUID
 
@@ -11,6 +12,7 @@ import java.util.UUID
  * A Client.
  */
 @Entity
+@DynamicUpdate
 @Table(name = "clients")
 class ClientJpa : Serializable {
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -69,7 +71,7 @@ class ClientJpa : Serializable {
         weight = client.weight
         equipmentAccess = client.equipmentAccess
         phonenumber = client.phonenumber
-        user = client.user.value
+        user = client.user?.value ?: UUID.randomUUID()
         username = client.username
         email = client.email
     }

@@ -49,7 +49,7 @@ class UserJpa(
             }
         }
         return User(
-            id = id,
+            userId = id,
             username = Username(username),
             email = Email(email),
             password = Password(password),

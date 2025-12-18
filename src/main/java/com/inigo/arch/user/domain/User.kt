@@ -3,12 +3,12 @@ package com.inigo.arch.user.domain
 import java.util.Base64
 import java.util.UUID
 
-data class User (val id: UUID,
-            val username: Username,
-            val email: Email,
-            val password: Password,
-            val role: Role,
-            var fido2: Fido2? = null) {
+data class User (val userId: UUID,
+                 val username: Username,
+                 val email: Email,
+                 val password: Password?,
+                 val role: Role,
+                 var fido2: Fido2? = null) {
 
     fun isChallengeExpired(): Boolean {
         return fido2?.challengeExpiry?.isBefore(java.time.Instant.now()) ?: true

@@ -1,8 +1,11 @@
 package com.inigo.arch.user.domain
 
-@JvmInline
-value class Password(val value: String) {
-    init {
-        require(value.isNotBlank()) { "Password cannot be void" }
+class Password private constructor(val value: String) {
+    companion object {
+        val VOID = Password("")
+
+        operator fun invoke(value: String?): Password {
+            return if (value.isNullOrEmpty()) VOID else Password(value)
+        }
     }
 }

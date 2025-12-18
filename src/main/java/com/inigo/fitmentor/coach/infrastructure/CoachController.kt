@@ -5,10 +5,13 @@ import com.inigo.fitmentor.coach.application.FindCoach
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.fitmentor.shared.domain.CoachId
 import com.inigo.fitmentor.shared.domain.UserId
+import com.inigo.fitmentor.shared.infrastructure.UserService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
+import org.apache.kafka.common.security.scram.internals.ScramFormatter.username
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springdoc.core.providers.SpringWebProvider
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -30,7 +33,10 @@ import java.util.*
 @Validated
 class CoachController(
     val findCoach: FindCoach,
-    val createCoach: CreateCoach) {
+    val createCoach: CreateCoach,
+    private val userService: UserService,
+    private val springWebProvider: SpringWebProvider
+) {
 
     /**
      * `GET  /coachs/:id` : get the "id" client.
@@ -50,24 +56,32 @@ class CoachController(
                 phonenumber = coach.phonenumber,
                 presentation = coach.presentation,
                 photo = coach.photo,
-                user = coach.user.value
+                user = coach.user!!.value,
+                email = coach.email,
+                username = coach.username
             ))
         }
     }
 
     @PostMapping
     fun modifyCoach(@RequestBody request: CoachCreationRequestBody): ResponseEntity<*> {
-        createCoach.execute(
-            toDomain(
-                CoachModificationRequest(
-                    id = UUID.fromString(request.id),
-                    phonenumber = request.phonenumber,
-                    presentation = request.presentation,
-                    photo = request.photo,
-                    user = UUID.fromString(request.user)
-                )
-            )
+        println("---------------------------" + request)
+        val dom = toDomain(
+        CoachModificationRequest(
+            id = UUID.fromString(request.id),
+            phonenumber = request.phonenumber,
+            presentation = request.presentation,
+            photo = request.photo,
+            user = UUID.fromString(request.user),
+            email = request.email,
+            username = request.username
         )
+        )
+        println("============================================ despues ")
+        createCoach.execute(
+            dom
+        )
+        println("++++++++++++++++++++++++++++++++++++++  fin")
         return ResponseEntity.ok("")
     }
 
@@ -78,7 +92,9 @@ class CoachController(
                 phonenumber = phonenumber,
                 presentation = presentation,
                 photo = photo,
-                user = UserId(user)
+                user = UserId(user),
+                email = email,
+                username = username
             )
         }
     }
@@ -92,6 +108,8 @@ class CoachController(
         var phonenumber: String? = null,
         var presentation: String? = null,
         var photo: String? = null,
+        @field:NotNull(message = "name must not be null")var username: String,
+        @field:NotNull(message = "email must not be null")var email: String,
         @field:NotNull(message = "user must not be null") var user: UUID
     ) : Serializable
 
@@ -100,7 +118,9 @@ class CoachController(
         var phonenumber: String? = null,
         var presentation: String? = null,
         var photo: String? = null,
-        var user: UUID
+        var user: UUID,
+        var username: String,
+        var email: String
     )
 
     data class CoachCreationRequestBody(
@@ -108,6 +128,8 @@ class CoachController(
         var phonenumber: String?,
         var presentation: String?,
         @field:NotNull(message = "userId  must not be null") var user: String,
-        var photo: String?
+        var photo: String?,
+        var username: String,
+        var email: String
     )
 }
