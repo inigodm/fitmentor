@@ -17,13 +17,17 @@ export class ModifyCoach {
     presentation = "";
     photo: File | null = null;
     user = "";
+    username = "";
+    email = "";
     error = '';
 
 
   constructor(private http: HttpClient, private router: Router) {
     const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras.state as { user?: string, username?: string };
+    const state = nav?.extras.state as { user?: string, username?: string, email?: string };
     this.user = state?.user ?? '';
+    this.username = state?.username ?? '';
+    this.email = state?.email ?? '';
   }
   photoPreview: string | null = null;
 
@@ -38,31 +42,37 @@ export class ModifyCoach {
   }
 
   async modifyCoach() {
-    const formData = new FormData();
-    formData.append('id', String(this.id));
-    if (this.phonenumber && this.phonenumber.trim() !== "") {
-      formData.append('phonenumber', this.phonenumber);
-    }
-    if (this.presentation && this.presentation.trim() !== "") {
-      formData.append('presentation', this.presentation);
-    }
-    formData.append('user', String(this.user));
+    let photoBase64 = null;
     if (this.photo) {
-      const base64 = await this.fileToBase64(this.photo);
-      formData.append('photo', base64 as string);
-    } else {
-      formData.append('photo', '');
+      photoBase64 = await this.fileToBase64(this.photo);
     }
 
-    this.http.post('/api/user/coaches', formData, { responseType: 'text' }).subscribe({
+    const requestBody: any = {
+      id: String(this.id),
+      user: String(this.user),
+      username: this.username,
+      email: this.email
+    };
+
+    if (this.phonenumber && this.phonenumber.trim() !== "") {
+      requestBody.phonenumber = this.phonenumber;
+    }
+    if (this.presentation && this.presentation.trim() !== "") {
+      requestBody.presentation = this.presentation;
+    }
+    if (photoBase64) {
+      requestBody.photo = photoBase64 as string;
+    }
+
+    this.http.post('/api/user/coaches', requestBody, { responseType: 'text' }).subscribe({
       next: () => {
         console.log('Coach creado exitosamente');
         this.router.navigate(['/ruta-destino']);
         this.error = '';
       },
       error: (err) => {
-        console.error('Error al crear el usuario:', err);
-        this.error = 'Error al crear el usuario';
+        console.error('Error al crear el coach:', err);
+        this.error = 'Error al crear el coach';
       }
     });
   }

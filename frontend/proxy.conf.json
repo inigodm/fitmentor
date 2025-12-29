@@ -1,13 +1,14 @@
 {
   "/api": {
-    "target": "https://fitmentor.com/:8443",
+    "target": "http://localhost:8080",
     "secure": false,
     "changeOrigin": true,
-    "potato": true
+    "logLevel": "debug"
   },
   "/webauthn": {
-    "target": "https://fitmentor.com/:8443",
+    "target": "http://localhost:8080",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }

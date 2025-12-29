@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { v7 as uuidv7 } from 'uuid';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './modify-client.html',
   styleUrl: './modify-client.scss'
 })
-export class ModifyClient  implements OnInit{
+export class ModifyClient {
     id = uuidv7();
     goals = "";
     age = 0;
@@ -29,15 +29,17 @@ export class ModifyClient  implements OnInit{
 
   constructor(private http: HttpClient, private router: Router) {
       const nav = this.router.getCurrentNavigation();
-      const state = nav?.extras.state as { user?: string, username?: string };
+      const state = nav?.extras.state as { user?: string, username?: string, email?: string };
       this.user = state?.user ?? '';
+      this.username = state?.username ?? '';
+      this.email = state?.email ?? '';
   }
 
     modifyClient() {
       console.log("pesa" + this.weight);
       console.log("por tantop" + Math.round(this.weight * 1000));
-      this.http.put('/api/user/clients',
-        { id: this.id,
+      this.http.post('/api/user/clients',
+        { id: { value: this.id },
           goals: this.goals,
           age: this.age,
           email: this.email,
@@ -46,29 +48,19 @@ export class ModifyClient  implements OnInit{
           equipmentAccess: this.equipmentAccess ? 1 : 0,
           preferedTrainingStyle: this.preferedTrainingStyle,
           phonenumber: this.phonenumber,
-          user: this.user,
+          user: { value: this.user },
           username: this.username,
           coach: this.coach },
         { responseType: 'text'}).subscribe({
         next: () => {
-          console.log('Usuario creado exitosamente');
+          console.log('Cliente creado exitosamente');
           this.router.navigate(['/client']);
           this.error = '';
         },
         error: (err) => {
-          console.error('Error al crear el usuario:', err);
-          this.error = 'Error al crear el usuario';
+          console.error('Error al crear el cliente:', err);
+          this.error = 'Error al crear el cliente';
         }
       });
-    }
-
-    ngOnInit(): void {
-      const nav = this.router.getCurrentNavigation();
-      const state = nav?.extras.state as { email: string, username: string };
-
-      if (state) {
-        this.email = state.email;
-        this.username = state.username;
-      }
     }
   }

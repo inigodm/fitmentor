@@ -33,7 +33,7 @@ export class CreateUser implements OnInit {
         next: () => {
           var url = '/create/' + this.type;
           this.router.navigate([url], {
-            state: { user: this.id, username: this.username }
+            state: { user: this.id, username: this.username, email: this.email }
           });
           this.error = '';
         },
