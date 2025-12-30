@@ -90,7 +90,9 @@ class CoachController(
             photo = request.photo,
             user = UUID.fromString(request.user),
             email = request.email,
-            username = request.username
+            username = request.username,
+            isNutritionist = request.isNutritionist,
+            isFitness = request.isFitness
         )
         )
         println("============================================ despues ")
@@ -110,7 +112,9 @@ class CoachController(
                 photo = photo,
                 user = UserId(user),
                 email = email,
-                username = username
+                username = username,
+                isNutritionist = isNutritionist,
+                isFitness = isFitness
             )
         }
     }
@@ -126,7 +130,9 @@ class CoachController(
         var photo: String? = null,
         @field:NotNull(message = "name must not be null")var username: String,
         @field:NotNull(message = "email must not be null")var email: String,
-        @field:NotNull(message = "user must not be null") var user: UUID
+        @field:NotNull(message = "user must not be null") var user: UUID,
+        var isNutritionist: Boolean = false,
+        var isFitness: Boolean = false
     ) : Serializable
 
     data class CoachResponse(
@@ -152,6 +158,8 @@ class CoachController(
         @field:NotNull(message = "userId  must not be null") var user: String,
         var photo: String?,
         var username: String,
-        var email: String
+        var email: String,
+        var isNutritionist: Boolean = false,
+        var isFitness: Boolean = false
     )
 }

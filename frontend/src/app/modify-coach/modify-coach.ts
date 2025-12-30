@@ -19,6 +19,8 @@ export class ModifyCoach {
     user = "";
     username = "";
     email = "";
+    isNutritionist = false;
+    isFitness = false;
     error = '';
 
 
@@ -51,7 +53,9 @@ export class ModifyCoach {
       id: String(this.id),
       user: String(this.user),
       username: this.username,
-      email: this.email
+      email: this.email,
+      isNutritionist: this.isNutritionist,
+      isFitness: this.isFitness
     };
 
     if (this.phonenumber && this.phonenumber.trim() !== "") {

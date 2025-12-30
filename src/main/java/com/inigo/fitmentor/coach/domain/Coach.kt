@@ -16,6 +16,8 @@ class Coach(
   phonenumber: String? = null,
   email: String,
   username: String,
+  val isNutritionist: Boolean = false,
+  val isFitness: Boolean = false
 ) : FitmentorUser(aggregateName = "snapshots.client",
     phonenumber = phonenumber,
     email = email,

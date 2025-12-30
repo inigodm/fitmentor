@@ -20,11 +20,23 @@ import java.util.stream.Collectors
 @Transactional
 open class CoachServiceAdapter(
     private val coachRepository: CoachRepository,
-    private val userJpaRepository: UserJpaRepository
+    private val userJpaRepository: UserJpaRepository,
+    private val nutritionistRepository: NutritionistRepository,
+    private val fitnessRepository: FitnessRepository
     ) : CoachService {
     override fun save(coach: Coach): Coach {
         LOG.debug("Request to save Coach : {}", coach)
-        return coachRepository.save(CoachJpa.fromDomain(coach)).toDomain()
+        val savedCoach = coachRepository.save(CoachJpa.fromDomain(coach)).toDomain()
+        
+        if (coach.isNutritionist) {
+            nutritionistRepository.save(NutritionistJpa.fromDomain( savedCoach.user!!.value))
+        }
+        
+        if (coach.isFitness) {
+            fitnessRepository.save(FitnessJpa.fromDomain( savedCoach.user!!.value))
+        }
+        
+        return savedCoach
     }
 
     override fun findAll(): List<Coach> {

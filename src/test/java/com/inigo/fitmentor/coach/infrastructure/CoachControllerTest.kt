@@ -1,7 +1,6 @@
 package com.inigo.fitmentor.coach.infrastructure
 
 import com.inigo.arch.ArchApplication
-//import com.inigo.arch.user.infrastructure.TestSecurityConfig
 import com.inigo.fitmentor.coach.application.CreateCoach
 import com.inigo.fitmentor.coach.application.FindAllCoaches
 import com.inigo.fitmentor.coach.application.FindCoach
@@ -110,7 +109,9 @@ class CoachControllerTest {
                 "user": "$userId",
                 "photo": "coach-photo.jpg",
                 "email": "random@email.com",
-                "username": "randomuser"
+                "username": "randomuser",
+                "isNutritionist": true,
+                "isFitness": true
             }
         """.trimIndent()
 
