@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { v7 as uuidv7 } from 'uuid';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './modify-client.scss'
 })
 export class ModifyClient {
+    @ViewChild('errorDialog') errorDialog!: ElementRef<HTMLDialogElement>;
+
     id = uuidv7();
     goals = "";
     age = 0;
@@ -60,7 +62,12 @@ export class ModifyClient {
         error: (err) => {
           console.error('Error al crear el cliente:', err);
           this.error = 'Error al crear el cliente';
+          this.errorDialog.nativeElement.showModal();
         }
       });
+    }
+
+    closeError() {
+        this.errorDialog.nativeElement.close();
     }
   }

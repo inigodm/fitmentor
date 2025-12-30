@@ -36,6 +36,13 @@
     <div class="form-actions">
       <button type="submit" class="btn-main">Guardar cambios</button>
     </div>
-    <div *ngIf="error" class="error">{{ error }}</div>
   </form>
 </div>
+
+<dialog #errorDialog class="error-dialog">
+  <div class="error-content">
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+    <button (click)="closeError()" class="btn-main">Cerrar</button>
+  </div>
+</dialog>

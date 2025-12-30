@@ -9,6 +9,7 @@ interface CoachService {
     fun save(coach: Coach): Coach
 
     fun findByCoachId(id: CoachId): Coach?
+    fun findAll(): List<Coach>
     fun existsUser(coach: Coach): Boolean
     fun existsCoach(root: Coach): Boolean
 

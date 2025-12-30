@@ -1,6 +1,7 @@
 package com.inigo.fitmentor.coach.infrastructure
 
 import com.inigo.fitmentor.coach.application.CreateCoach
+import com.inigo.fitmentor.coach.application.FindAllCoaches
 import com.inigo.fitmentor.coach.application.FindCoach
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.fitmentor.shared.domain.CoachId
@@ -33,6 +34,7 @@ import java.util.*
 @Validated
 class CoachController(
     val findCoach: FindCoach,
+    val findAllCoaches: FindAllCoaches,
     val createCoach: CreateCoach,
     private val userService: UserService,
     private val springWebProvider: SpringWebProvider
@@ -61,6 +63,20 @@ class CoachController(
                 username = coach.username
             ))
         }
+    }
+
+    @GetMapping
+    fun getAllCoaches(): ResponseEntity<List<CoachSummaryResponse>> {
+        LOG.debug("REST request to get all Coaches")
+        val coaches = findAllCoaches.execute()
+        val response = coaches.map { coach ->
+            CoachSummaryResponse(
+                name = coach.username,
+                presentation = coach.presentation,
+                photo = coach.photo
+            )
+        }
+        return ResponseEntity.ok(response)
     }
 
     @PostMapping
@@ -121,6 +137,12 @@ class CoachController(
         var user: UUID,
         var username: String,
         var email: String
+    )
+
+    data class CoachSummaryResponse(
+        var name: String,
+        var presentation: String? = null,
+        var photo: String? = null
     )
 
     data class CoachCreationRequestBody(

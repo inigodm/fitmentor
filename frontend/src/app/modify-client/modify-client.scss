@@ -101,3 +101,31 @@ input[type="checkbox"] {
   border-radius: 4px;
   object-fit: cover;
 }
+
+.error-dialog {
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.error-content {
+  padding: 20px;
+  text-align: center;
+
+  h3 {
+    color: var(--color-primary-dark);
+    margin-top: 0;
+  }
+
+  p {
+    margin: 15px 0;
+    color: var(--color-text);
+  }
+}

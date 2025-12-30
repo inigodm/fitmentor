@@ -1,8 +1,9 @@
 package com.inigo.fitmentor.coach.infrastructure
 
 import com.inigo.arch.ArchApplication
-import com.inigo.arch.user.infrastructure.TestSecurityConfig
+//import com.inigo.arch.user.infrastructure.TestSecurityConfig
 import com.inigo.fitmentor.coach.application.CreateCoach
+import com.inigo.fitmentor.coach.application.FindAllCoaches
 import com.inigo.fitmentor.coach.application.FindCoach
 import com.inigo.fitmentor.coach.domain.Coach
 import com.inigo.fitmentor.shared.domain.CoachId
@@ -13,11 +14,8 @@ import io.mockk.justRun
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -31,7 +29,6 @@ import java.util.*
     classes = [ArchApplication::class]
 )
 @ActiveProfiles("test")
-@Import(TestSecurityConfig::class)
 @AutoConfigureMockMvc
 class CoachControllerTest {
 
@@ -40,6 +37,9 @@ class CoachControllerTest {
 
     @MockkBean(relaxed = true)
     private lateinit var findCoach: FindCoach
+
+    @MockkBean(relaxed = true)
+    private lateinit var findAllCoaches: FindAllCoaches
 
     @MockkBean(relaxed = true)
     private lateinit var createCoach: CreateCoach
@@ -289,5 +289,60 @@ class CoachControllerTest {
 
         verify(exactly = 1) { findCoach.execute(CoachId(coachId)) }
     }
-}
 
+    @Test
+    fun `should get all coaches successfully`() {
+        // Given
+        val coach1 = Coach(
+            id = CoachId(UUID.randomUUID()),
+            phonenumber = "111111111",
+            presentation = "Coach 1 presentation",
+            photo = "photo1.jpg",
+            user = UserId(UUID.randomUUID()),
+            email = "coach1@email.com",
+            username = "coach1"
+        )
+
+        val coach2 = Coach(
+            id = CoachId(UUID.randomUUID()),
+            phonenumber = "222222222",
+            presentation = "Coach 2 presentation",
+            photo = "photo2.jpg",
+            user = UserId(UUID.randomUUID()),
+            email = "coach2@email.com",
+            username = "coach2"
+        )
+
+        every { findAllCoaches.execute() } returns listOf(coach1, coach2)
+
+        // When & Then
+        mockMvc.perform(
+            get("/api/user/coaches")
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$[0].name").value("coach1"))
+            .andExpect(jsonPath("$[0].presentation").value("Coach 1 presentation"))
+            .andExpect(jsonPath("$[0].photo").value("photo1.jpg"))
+            .andExpect(jsonPath("$[1].name").value("coach2"))
+            .andExpect(jsonPath("$[1].presentation").value("Coach 2 presentation"))
+            .andExpect(jsonPath("$[1].photo").value("photo2.jpg"))
+
+        verify(exactly = 1) { findAllCoaches.execute() }
+    }
+
+    @Test
+    fun `should return empty list when no coaches exist`() {
+        // Given
+        every { findAllCoaches.execute() } returns emptyList()
+
+        // When & Then
+        mockMvc.perform(
+            get("/api/user/coaches")
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$").isArray)
+            .andExpect(jsonPath("$").isEmpty)
+
+        verify(exactly = 1) { findAllCoaches.execute() }
+    }
+}

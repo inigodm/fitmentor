@@ -27,7 +27,7 @@ open class CoachServiceAdapter(
         return coachRepository.save(CoachJpa.fromDomain(coach)).toDomain()
     }
 
-    fun findAll(): List<Coach> {
+    override fun findAll(): List<Coach> {
         LOG.debug("Request to get all Coachs")
         return coachRepository.findAll().stream()
             .map { obj: CoachJpa -> obj.toDomain() }
